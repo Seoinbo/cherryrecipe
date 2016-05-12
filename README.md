@@ -1,2 +1,3 @@
-# cherryrecipe
+# CherryRecipe
+
 My recipe notebook.
