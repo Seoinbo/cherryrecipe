@@ -1,3 +1,0 @@
-# CherryRecipe
-
-My recipe notebook.
