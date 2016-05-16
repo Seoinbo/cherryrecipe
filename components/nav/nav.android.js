@@ -5,17 +5,25 @@ import {
     Text,
     View,
     Navigator,
-    TouchableHighlight
+    TouchableHighlight,
+    If
 } from 'react-native';
 import {Button} from '../button/button';
 
 export class Nav extends Component {
 
     render() {
+        let subjectBox;
+        if (this.props.childType == 'object') {
+            subjectBox = <Text style={styles.subject}>{this.props.children}</Text>;
+        } else {
+            subjectBox = <View style={styles.subjectbox}>{this.props.children}</View>;
+        }
+        
         return (
             <View style={[styles.nav, this.props.style]}>
                 <Button icon="setting"/>
-                <Text style={styles.subject}>{this.props.children}</Text>
+                {subjectBox}
                 <Button icon="autorenew"/>
             </View>
         )
@@ -35,6 +43,9 @@ const styles = StyleSheet.create({
   },
   subject: {
       fontSize: 18
+  },
+  subjectbox: {
+      
   }
 });
 

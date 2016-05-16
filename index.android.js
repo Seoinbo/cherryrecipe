@@ -11,7 +11,9 @@ class Cherryrecipe extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Nav style={styles.nav}>Navigator</Nav>
+                <Nav style={styles.nav} childType="object">
+                    <Text>Navigator</Text>
+                </Nav>
             </View>
         );
     }
