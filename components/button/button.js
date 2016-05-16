@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text as Title,
+    Text,
     View,
     TouchableHighlight
 } from 'react-native';
-import Svg, {
-    Path
-} from 'react-native-svg';
+import {Icon} from '../icon/icon';
 
 export class Button extends Component {
     render() {
         return (
-            <View style={[styles.nav, this.props.style]}>
-                <TouchableHighlight onPress={this._onPressButton}>
-                    <Svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                        <Path d="M2 15.5v2h20v-2H2zm0-5v2h20v-2H2zm0-5v2h20v-2H2z"/>
-                        <Path d="M0 0h24v24H0z" fill="none"/>
-                    </Svg>
-                </TouchableHighlight>
-                <Text>{this.props.children}</Text>
-            </View>
+            <TouchableHighlight style={[styles.button, this.props.style]} onPress={this._onPressButton}>
+                <View style={styles.box}>
+                    <Icon name={this.props.icon}/>
+                    <Text>{this.props.children}</Text>
+                </View>
+            </TouchableHighlight>
         )
     }
     
@@ -29,14 +24,17 @@ export class Button extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-  nav: {
+export const styles = StyleSheet.create({
+  button: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6CC6B8'
+    width: 45,
+    height: 45,
+    backgroundColor: '#3AE2CE'
   },
-  subject: {
-      fontSize: 15
+  box: {
+      flexWrap: 'nowrap',
+      flexDirection: 'row'
   }
 });

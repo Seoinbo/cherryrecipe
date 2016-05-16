@@ -7,16 +7,16 @@ import {
     Navigator,
     TouchableHighlight
 } from 'react-native';
-import {Icon} from '../icon/icon';
-
+import {Button} from '../button/button';
 
 export class Nav extends Component {
 
     render() {
         return (
             <View style={[styles.nav, this.props.style]}>
-                <Icon/>
-                <Text>{this.props.children}</Text>
+                <Button icon="setting"/>
+                <Text style={styles.subject}>{this.props.children}</Text>
+                <Button icon="autorenew"/>
             </View>
         )
     }
@@ -29,12 +29,12 @@ export class Nav extends Component {
 const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#6CC6B8'
   },
   subject: {
-      fontSize: 15
+      fontSize: 18
   }
 });
 

@@ -1,43 +1,28 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
-    View
+    View,
+    Image
 } from 'react-native';
-import Svg, {
-    Circle,
-    Ellipse,
-    G,
-    LinearGradient,
-    RadialGradient,
-    Line,
-    Path,
-    Polygon,
-    Polyline,
-    Rect,
-    Symbol,
-    Text,
-    Use,
-    Defs,
-    Stop
-} from 'react-native-svg';
 
 export class Icon extends Component {
     render() {
+        let path;
+        switch (this.props.name) {
+        case 'autorenew':
+            path = require("../../images/icons/ic_autorenew.png");
+            break;
+        case 'dehaze':
+            path = require("../../images/icons/ic_dehaze.png");
+            break;
+        case 'setting':
+            path = require("../../images/icons/ic_settings.png");
+            break;
+        }
         return (
-            <View style={[styles.icon, this.props.style]}>
-                <Svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                    <Path d="M2 15.5v2h20v-2H2zm0-5v2h20v-2H2zm0-5v2h20v-2H2z"/>
-                    <Path d="M0 0h24v24H0z" fill="none"/>
-                </Svg>
+            <View>
+                <Image source={path} />
             </View>
-        )
+        );
     }
-    _onPressButton() {
-        alert(1);
-    }
-}
-
-const styles = StyleSheet.create({
-  icon: {
-  }
-});
+};

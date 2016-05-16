@@ -12,7 +12,6 @@ class Cherryrecipe extends Component {
         return (
             <View style={styles.container}>
                 <Nav style={styles.nav}>Navigator</Nav>
-                <Text style={styles.nav}>aaa</Text>
             </View>
         );
     }
