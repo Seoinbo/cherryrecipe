@@ -15,14 +15,31 @@ export class Icon extends Component {
         case 'dehaze':
             path = require("../../images/icons/ic_dehaze.png");
             break;
-        case 'setting':
+        case 'settings':
             path = require("../../images/icons/ic_settings.png");
             break;
+        case 'expand_less':
+            path = require("../../images/icons/ic_expand_less.png");
+            break;
+        case 'expand_more':
+            path = require("../../images/icons/ic_expand_more.png");
+            break;
+        }
+        
+        let imgSize = {};
+        if (this.props.iconWidth) {
+            imgSize.width = +this.props.iconWidth;
+        }
+        if (this.props.iconHeight) {
+            imgSize.height = +this.props.iconHeight;
         }
         return (
-            <View>
-                <Image source={path} />
+            <View style={[this.props.style]}>
+                <Image style={imgSize} source={path} />
             </View>
         );
     }
 };
+
+const styles = {
+}

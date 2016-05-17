@@ -15,14 +15,14 @@ export class Nav extends Component {
     render() {
         let subjectBox;
         if (this.props.childType == 'object') {
-            subjectBox = <Text style={styles.subject}>{this.props.children}</Text>;
-        } else {
             subjectBox = <View style={styles.subjectbox}>{this.props.children}</View>;
+        } else {
+            subjectBox = <Text style={styles.subject}>{this.props.children}</Text>;
         }
         
         return (
             <View style={[styles.nav, this.props.style]}>
-                <Button icon="setting"/>
+                <Button icon="settings"/>
                 {subjectBox}
                 <Button icon="autorenew"/>
             </View>
