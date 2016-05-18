@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View,
     Navigator,
-    TouchableHighlight,
-    If
+    TouchableHighlight
 } from 'react-native';
 import {Button} from '../button/button';
 
@@ -48,5 +46,3 @@ const styles = StyleSheet.create({
       
   }
 });
-
-AppRegistry.registerComponent('Nav', () => Nav);
