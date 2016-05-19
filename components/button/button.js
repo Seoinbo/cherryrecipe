@@ -9,18 +9,22 @@ import {Icon} from '../icon/icon';
 
 export class Button extends Component {
     render() {
+        var touchableProps = {};
+        if (!this.props.disabled) {
+            touchableProps.onPress = this.props.onPress;
+            touchableProps.onPressIn = this.props.onPressIn;
+            touchableProps.onPressOut = this.props.onPressOut;
+            touchableProps.onLongPress = this.props.onLongPress;
+        }
+    
         return (
-            <TouchableHighlight underlayColor="paleturquoise" style={[styles.button, this.props.style]} onPress={this._onPressButton}>
+            <TouchableHighlight {...touchableProps} underlayColor="paleturquoise" style={[styles.button, this.props.style]}>
                 <View style={styles.box}>
                     <Icon name={this.props.icon}/>
                     <Text>{this.props.children}</Text>
                 </View>
-            </TouchableHighlight >
+            </TouchableHighlight>
         )
-    }
-    
-    _onPressButton() {
-        alert(1);
     }
 }
 
