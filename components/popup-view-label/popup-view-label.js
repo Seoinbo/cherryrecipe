@@ -17,16 +17,16 @@ export class PopupViewLabel extends Component {
         )
     }
     
-    inactive() {
-        this.refs.popupView.inactive();
+    open() {
+        this.refs.popupView.open();
     }
     
-    active() {
-        this.refs.popupView.active();
+    close() {
+        this.refs.popupView.close();
     }
     
-    _onPressButton() {
-        alert(1);
+    toggle() {
+        this.refs.popupView.toggle();
     }
 }
 

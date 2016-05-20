@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {EventEmitter} from '../../services/eventEmitter';
 
 export class ViewObject extends Component {
     constructor() {
@@ -9,18 +10,30 @@ export class ViewObject extends Component {
             rendering: true,
             editing: false
         };
+        this.eventEmitter = new EventEmitter();
+    }
+    
+    setViewState(nextState, complete) {
+        this.setState(nextState, function (e) {
+            if (complete) {
+                complete.apply(null, [e]);
+            }
+            this.eventEmitter.fireEvent('stateSet', nextState, null);
+        });
     }
     
     active() {
         if (!this.state.visibility) {
             this.show();
         }
-        this.setState({activation: true});
+        this.setViewState({activation: true});
     }
 
     inactive() {
-        this.setState({activation: false});
+        this.setViewState({activation: false});
     }
+    
+    
 
     toggleActivation() {
         if (this.state.activation) {
@@ -31,10 +44,10 @@ export class ViewObject extends Component {
     }
     
     show() {
-        this.setState({visibility: true});
+        this.setViewState({visibility: true});
     }
 
     hide() {
-        this.setState({visibility: false});
+        this.setViewState({visibility: false});
     }
 }

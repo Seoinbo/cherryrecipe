@@ -22,8 +22,7 @@ class Cherryrecipe extends Component {
     constructor() {
         super();
         this.state = {
-            currentLabelName: "All labels",
-            test: false
+            currentLabelName: "All labels"
         };
     }
    
@@ -33,7 +32,7 @@ class Cherryrecipe extends Component {
             <View id="aaa" style={styles.container}>
                 <View>
                     <Nav style={styles.nav} childType="object">
-                        <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._onPressButton()}}>
+                        <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
                             <View style={styles.innerNav}>
                                 <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
                                 <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
@@ -41,25 +40,13 @@ class Cherryrecipe extends Component {
                         </TouchableHighlight>
                     </Nav>
                 </View>
-                <PopupViewLabel ref="popupViewLabel" isVisible={this.state.test}></PopupViewLabel>
+                <PopupViewLabel ref="popupViewLabel" isVisible={false}></PopupViewLabel>
             </View>
         );
     }
     
-    _onPressButton() {
-        if (act) {
-            act = false;
-            test = "aaaaa";
-            this.refs.popupViewLabel.inactive();
-        } else {
-            act = true;
-            test = "bbbbbb";
-            this.refs.popupViewLabel.active();
-        }
-        this.setState({
-            currentLabelName: test,
-            test: act
-        });
+    _labelListOpen() {
+        this.refs.popupViewLabel.toggle();
     }
 }
 
