@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#888888',
+        backgroundColor: '#e5e5e5',
     },
     nav: {
         height: 50,

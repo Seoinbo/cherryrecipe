@@ -14,11 +14,19 @@ export class PopupView extends ViewObject {
     constructor() {
         super();
         this.state = Object.assign(this.state, {
-            aniBgOpacity: new Animated.Value(0), // init opacity 0
-            aniBoxPos: new Animated.ValueXY({x: 0, y: 300})
+            animate: {
+                tooltipText: {
+                    opacity: new Animated.Value(0),
+                    xy: new Animated.ValueXY({x: 0, y: 15})
+                },
+                bg: {
+                    opacity: new Animated.Value(0)
+                },
+                box: {
+                    xy: new Animated.ValueXY({x: 0, y: 300})
+                }
+            }
         });
-        
-
     }
     
     componentDidMount() {
@@ -27,15 +35,31 @@ export class PopupView extends ViewObject {
     
     open() {
         this.active();
+        
         Animated.parallel([
             Animated.timing(
-                this.state.aniBgOpacity, {
+                this.state.animate.tooltipText.opacity, {
+                    delay: 230,
                     duration: 250,
                     toValue: 1
                 }
             ),
             Animated.timing(
-                this.state.aniBoxPos, {
+                this.state.animate.tooltipText.xy, {
+                    delay: 230,
+                    duration: 250,
+                    easing: Easing.out(Easing.quad),
+                    toValue: {x: 0, y: 0}
+                }
+            ),
+            Animated.timing(
+                this.state.animate.bg.opacity, {
+                    duration: 250,
+                    toValue: 1
+                }
+            ),
+            Animated.timing(
+                this.state.animate.box.xy, {
                     duration: 250,
                     toValue: {x: 0, y: 0}
                 }
@@ -46,15 +70,26 @@ export class PopupView extends ViewObject {
     close() {
         Animated.parallel([
             Animated.timing(
-                this.state.aniBgOpacity, {
+                this.state.animate.tooltipText.opacity, {
                     duration: 250,
                     toValue: 0
                 }
             ),
             Animated.timing(
-                this.state.aniBoxPos, {
+                this.state.animate.tooltipText.xy, {
                     duration: 250,
-                    // easing: Easing.inOut(Easing.ease),
+                    toValue: {x: 0, y: 15}
+                }
+            ),
+            Animated.timing(
+                this.state.animate.bg.opacity, {
+                    duration: 250,
+                    toValue: 0
+                }
+            ),
+            Animated.timing(
+                this.state.animate.box.xy, {
+                    duration: 250,
                     toValue: {x: 0, y: 300}
                 }
             )
@@ -74,14 +109,14 @@ export class PopupView extends ViewObject {
     render() {
         return (
             <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
-                <Animated.View style={[styles.bg, {opacity: this.state.aniBgOpacity}]}></Animated.View>
+                <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
                 <View style={styles.content}>
                     <View style={styles.tooltip}>
-                        <Text style={styles.tooltipText}>It's tooltip!</Text>
+                        <Animated.Text style={[styles.tooltipText, {opacity: this.state.animate.tooltipText.opacity, transform: this.state.animate.tooltipText.xy.getTranslateTransform()}]}>{this.props.tooltip}</Animated.Text>
                     </View>
-                    <Animated.View style={[styles.box, {transform: this.state.aniBoxPos.getTranslateTransform()}]}>
+                    <Animated.View style={[styles.box, {transform: this.state.animate.box.xy.getTranslateTransform()}]}>
                         <View style={styles.header}>
-                            <Text style={styles.subject}>Subject</Text>
+                            <Text style={styles.subject}>{this.props.title}</Text>
                             <Button style={styles.closeButton} icon="expand_more" onPress={() => {this.close()}} />
                         </View>
                         <View style={styles.body}>

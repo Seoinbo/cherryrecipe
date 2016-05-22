@@ -11,7 +11,10 @@ import {PopupView} from '../popup-view/popup-view';
 export class PopupViewLabel extends Component {
     render() {
         return (
-            <PopupView ref="popupView" style={[styles.popupView, this.props.style]}>
+            <PopupView ref="popupView" 
+                style={[styles.popupView, this.props.style]}
+                title="Labels"
+                tooltip="라벨을 선택해주세요">
                 <Text>here contents</Text>
             </PopupView>
         )

@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         width: 45,
         height: 45,
-        backgroundColor: '#3AE2CE'
+        backgroundColor: '#b0e0e6'
     },
     box: {
         flexWrap: 'nowrap',

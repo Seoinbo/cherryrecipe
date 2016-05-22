@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#6CC6B8'
+    alignItems: 'center'
   },
   subject: {
       fontSize: 18
