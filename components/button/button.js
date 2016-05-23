@@ -5,9 +5,12 @@ import {
     View,
     TouchableHighlight 
 } from 'react-native';
+import {commStyles} from '../styles';
+import {ViewObject} from '../view-object/view-object';
 import {Icon} from '../icon/icon';
+import {ToggleView} from '../toggle-view/toggle-view';
 
-export class Button extends Component {
+export class Button extends ViewObject {
     render() {
         var touchableProps = {};
         if (!this.props.disabled) {
@@ -18,12 +21,14 @@ export class Button extends Component {
         }
     
         return (
-            <TouchableHighlight {...touchableProps} underlayColor="paleturquoise" style={[styles.button, this.props.style]}>
-                <View style={styles.box}>
-                    <Icon name={this.props.icon}/>
-                    <Text>{this.props.children}</Text>
-                </View>
-            </TouchableHighlight>
+            <ToggleView style={[styles.button, this.props.style]} hidden={this.props.hidden}>
+                <TouchableHighlight {...touchableProps} underlayColor="paleturquoise">
+                    <View style={styles.box}>
+                        <Icon name={this.props.icon}/>
+                        <Text>{this.props.children}</Text>
+                    </View>
+                </TouchableHighlight>
+            </ToggleView>
         )
     }
 }
@@ -35,7 +40,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         width: 45,
         height: 45,
-        backgroundColor: '#b0e0e6'
+        // backgroundColor: '#b0e0e6'
     },
     box: {
         flexWrap: 'nowrap',

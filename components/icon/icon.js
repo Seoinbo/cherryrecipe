@@ -24,6 +24,9 @@ export class Icon extends Component {
         case 'expand_more':
             path = require("../../images/icons/ic_expand_more.png");
             break;
+        case 'clear':
+            path = require("../../images/icons/ic_clear.png");
+            break;
         }
         
         let imgSize = {};
