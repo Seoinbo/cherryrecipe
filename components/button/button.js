@@ -21,7 +21,7 @@ export class Button extends ViewObject {
         }
     
         return (
-            <ToggleView style={[styles.button, this.props.style]} hidden={this.props.hidden}>
+            <ToggleView style={[styles.button, this.props.style]} rendering={this.props.rendering} visible={this.props.visible}>
                 <TouchableHighlight {...touchableProps} underlayColor="paleturquoise">
                     <View style={styles.box}>
                         <Icon name={this.props.icon}/>

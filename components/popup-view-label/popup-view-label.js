@@ -4,32 +4,61 @@ import {
     Text,
     TextInput,
     View,
+    ListView,
     TouchableHighlight,
 } from 'react-native';
 import {commStyles} from '../styles';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
+import {LabelItem} from './label-item.js';
 
 export class PopupViewLabel extends ViewObject {
+    constructor() {
+        super();
+        var labelSource = new ListView.DataSource({rowHasChanged: this._labelDataChange}); 
+        this.state = Object.assign(this.state, {
+            arrLabelData: labelSource.cloneWithRows(this._getLabelData())
+        });
+    }
+    
+    _getLabelData() {
+         var data = [
+          {name: 'first', idx: 0},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'bbbb', idx: 1},
+          {name: 'last', idx: 1}
+        ];
+        return data;
+    }
+    
+    _labelDataChange(r1, r2) {
+        console.log('callback', r1, r2);
+    }
+    
+    _renderRow(data) {
+        return (
+            <LabelItem source={data}/>
+        )
+    }
+    
     render() {
         return (
             <PopupView ref="popupView" 
                 style={[styles.popupView, this.props.style]}
                 title="Labels"
                 tooltip="라벨을 선택해주세요">
-                <View>
-                    <View style={styles.item}>
-                        <Button style={styles.move} icon="dehaze" rendering={this.state.editing}/>
-                        <TextInput style={styles.labelName} placeholder="input your label name"></TextInput>
-                        <Button style={styles.remove} icon="clear" visible={this.state.editing}/>
-                    </View>
-                    <View style={styles.item}>
-                        <Button style={styles.move} icon="dehaze" rendering={false}/>
-                        <TextInput style={styles.labelName} placeholder="input your label name"></TextInput>
-                        <Button style={styles.remove} icon="clear" visible={this.state.editing}/>
-                    </View>
-                </View>
+                <ListView 
+                    dataSource={this.state.arrLabelData}
+                    renderRow={(rowData, sectionID, rowID, highlightRow) => {
+                        return this._renderRow(rowData)}
+                    }
+                />
             </PopupView>
         )
     }
@@ -50,21 +79,4 @@ export class PopupViewLabel extends ViewObject {
 const styles = StyleSheet.create({
     popupView: {
     },
-    item: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center' 
-    },
-    move: {
-        position: 'absolute',
-        top: 10
-    },
-    labelName: {
-        flex: 1,
-        fontSize: commStyles.fontSize,
-        marginLeft: 50
-    },
-    remove: {
-        marginRight: 10
-    }
 });

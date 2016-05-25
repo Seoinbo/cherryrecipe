@@ -4,6 +4,8 @@ import {
     StyleSheet,
     Text,
     View,
+    TextInput,
+    ScrollView,
     TouchableHighlight
 } from 'react-native';
 import {Nav} from './components/nav/nav';
@@ -40,6 +42,21 @@ class Cherryrecipe extends Component {
                         </TouchableHighlight>
                     </Nav>
                 </View>
+                <ScrollView removeClippedSubviews={false}>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                </ScrollView>
+                
                 <PopupViewLabel ref="popupViewLabel" isVisible={false}></PopupViewLabel>
             </View>
         );

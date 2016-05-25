@@ -50,4 +50,20 @@ export class ViewObject extends Component {
     hide() {
         this.setViewState({visibility: false});
     }
+    
+    enterEditMode() {
+        this.setViewState({editing: true});
+    }
+
+    exitEditMode() {
+        this.setViewState({editing: false});
+    }
+    
+    toggleEditMode() {
+        if (this.editing) {
+            this.exitEditMode();
+        } else {
+            this.enterEditMode();
+        }
+    }
 }
