@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "link": "rnpm link realm"
+    "link": "rnpm link realm; rnpm link react-native-keyboardevents"
   },
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.25.1",
+    "react-native-keyboard-aware-scroll-view": "0.0.7",
     "react-native-svg": "^1.3.1",
     "realm": "^0.13.1"
   }

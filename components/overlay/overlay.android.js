@@ -16,7 +16,7 @@ export class Overlay extends Component {
     render() {
        if (this.props.isVisible) {
             return (
-                <View style={styles.container}>
+                <View style={[this.props.style, styles.container]}>
                     {React.Children.map(this.props.children, React.cloneElement)}
                 </View>
             );

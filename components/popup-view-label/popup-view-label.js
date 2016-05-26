@@ -6,12 +6,14 @@ import {
     View,
     ListView,
     TouchableHighlight,
+    RecyclerViewBackedScrollView
 } from 'react-native';
 import {commStyles} from '../styles';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
 import {LabelItem} from './label-item.js';
+import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
 
 export class PopupViewLabel extends ViewObject {
     constructor() {
@@ -25,6 +27,7 @@ export class PopupViewLabel extends ViewObject {
     _getLabelData() {
          var data = [
           {name: 'first', idx: 0},
+          {name: 'bbbb', idx: 1},
           {name: 'bbbb', idx: 1},
           {name: 'bbbb', idx: 1},
           {name: 'bbbb', idx: 1},
@@ -51,9 +54,12 @@ export class PopupViewLabel extends ViewObject {
         return (
             <PopupView ref="popupView" 
                 style={[styles.popupView, this.props.style]}
+                height={300}
                 title="Labels"
                 tooltip="라벨을 선택해주세요">
-                <ListView 
+                <KeyboardAwareListView
+                    renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+                    keyboardShouldPersistTaps={true} 
                     dataSource={this.state.arrLabelData}
                     renderRow={(rowData, sectionID, rowID, highlightRow) => {
                         return this._renderRow(rowData)}

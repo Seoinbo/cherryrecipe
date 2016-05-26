@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
+    DeviceEventEmitter,
     Animated,
     Easing,
     Text,
-    View
+    View,
+    Dimensions
 } from 'react-native';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
 import {Overlay} from '../overlay/overlay';
+import {Layout} from '../../services/layout';
 
 export class PopupView extends ViewObject {
     constructor() {
@@ -25,12 +28,60 @@ export class PopupView extends ViewObject {
                 box: {
                     xy: new Animated.ValueXY({x: 0, y: 300})
                 }
+            },
+            layout: {
+                windowWidth: 0,
+                windowHeight: 0,
+                keyboardHeight: 0,
+                tooltip: Layout.DefaultValue(),
+                box: Layout.DefaultValue()
             }
         });
     }
     
     componentDidMount() {
+        // Update state of window dimensions.
+        this._updateWindowDims(); 
         
+        setInterval( () => {
+            console.log('interval: ', this.state.keyboardHeight);
+        }, 3000)
+        
+        // Not supported 'keyboardWillShow' for Android.
+        this.keyboardWillShowEvent = DeviceEventEmitter.addListener('keyboardDidShow', (frames) => {
+            this._updateKeyboardHeight(frames);
+        });
+        
+        this.keyboardWillHideEvent = DeviceEventEmitter.addListener('keyboardDidHide', () => {
+            this._resetKeyboardHeight();
+        });
+    }
+    
+    _updateWindowDims() {
+        let dims = Dimensions.get('window');
+        this.setState({
+            layout: Object.assign(this.state.layout, {
+                windowWidth: dims.width,
+                windowHeight: dims.height
+            })
+        });
+    }
+    
+    _updateKeyboardHeight(frames) {
+        this.setState({
+            layout: Object.assign(this.state.layout, {
+                keyboardHeight: frames.endCoordinates.height
+            })
+        });
+        console.log('key: ', this.state.layout.keyboardHeight);
+    }
+    
+    _resetKeyboardHeight() {
+        this.setState({
+            layout: Object.assign(this.state.layout, {
+                keyboardHeight: 0
+            })
+        });
     }
     
     open() {
@@ -108,13 +159,13 @@ export class PopupView extends ViewObject {
     
     render() {
         return (
-            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
+            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style, {height: this.state.layout.keyboardHeight}]}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
                 <View style={styles.content}>
-                    <View style={styles.tooltip}>
+                    <View ref='tooltip' style={styles.tooltip} onLayout={(event) => {this._onLayoutTooltip(event)}}>
                         <Animated.Text style={[styles.tooltipText, {opacity: this.state.animate.tooltipText.opacity, transform: this.state.animate.tooltipText.xy.getTranslateTransform()}]}>{this.props.tooltip}</Animated.Text>
                     </View>
-                    <Animated.View style={[styles.box, {transform: this.state.animate.box.xy.getTranslateTransform()}]}>
+                    <Animated.View style={[styles.box, {transform: this.state.animate.box.xy.getTranslateTransform()}]} onLayout={(event) => {this._onLayoutBox(event)}}>
                         <View style={styles.header}>
                             <Text style={styles.subject}>{this.props.title}</Text>
                             <Button style={styles.closeButton} icon="expand_more" onPress={() => {this.close()}} />
@@ -126,6 +177,34 @@ export class PopupView extends ViewObject {
                 </View>
             </Overlay>
         )        
+    }
+    
+    _onLayoutTooltip(event) {
+        let dimensions = event.nativeEvent.layout;
+        this.setState({
+            layout: {
+                tooltip: {
+                    width: dimensions.width,
+                    height: dimensions.height,
+                    x: dimensions.x,
+                    y: dimensions.y
+                }
+            }
+        });
+    }
+    
+    _onLayoutBox(event) {
+        let dimensions = event.nativeEvent.layout;
+        this.setState({
+            layout: {
+                box: {
+                    width: dimensions.width,
+                    height: dimensions.height,
+                    x: dimensions.x,
+                    y: dimensions.y
+                }
+            }
+        });
     }
 }
 

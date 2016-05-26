@@ -42,21 +42,6 @@ class Cherryrecipe extends Component {
                         </TouchableHighlight>
                     </Nav>
                 </View>
-                <ScrollView removeClippedSubviews={false}>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                </ScrollView>
-                
                 <PopupViewLabel ref="popupViewLabel" isVisible={false}></PopupViewLabel>
             </View>
         );
@@ -68,6 +53,8 @@ class Cherryrecipe extends Component {
 }
 
 const styles = StyleSheet.create({
+    sty: {
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
