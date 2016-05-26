@@ -32,7 +32,7 @@ export class PopupView extends ViewObject {
             layout: {
                 windowWidth: 0,
                 windowHeight: 0,
-                keyboardHeight: 0,
+                keyboardHeight: 300,
                 tooltip: Layout.DefaultValue(),
                 box: Layout.DefaultValue()
             }
@@ -41,11 +41,16 @@ export class PopupView extends ViewObject {
     
     componentDidMount() {
         // Update state of window dimensions.
-        this._updateWindowDims(); 
+        this._updateWindowDims();
         
-        setInterval( () => {
-            console.log('interval: ', this.state.keyboardHeight);
-        }, 3000)
+        
+        this.setState({
+            layout: Object.assign(this.state.layout, {
+                box: Object.assign(this.state.layout.box, {
+                    height: this.state.layout.windowHeight
+                })
+            })
+        });
         
         // Not supported 'keyboardWillShow' for Android.
         this.keyboardWillShowEvent = DeviceEventEmitter.addListener('keyboardDidShow', (frames) => {
@@ -70,16 +75,21 @@ export class PopupView extends ViewObject {
     _updateKeyboardHeight(frames) {
         this.setState({
             layout: Object.assign(this.state.layout, {
-                keyboardHeight: frames.endCoordinates.height
+                keyboardHeight: frames.endCoordinates.height,
+                box: Object.assign(this.state.layout.box, {
+                    height: this.state.layout.windowHeight - frames.endCoordinates.height
+                })
             })
         });
-        console.log('key: ', this.state.layout.keyboardHeight);
     }
     
     _resetKeyboardHeight() {
         this.setState({
             layout: Object.assign(this.state.layout, {
-                keyboardHeight: 0
+                keyboardHeight: 0,
+                box: Object.assign(this.state.layout.box, {
+                    height: this.state.layout.windowHeight
+                })
             })
         });
     }
@@ -159,7 +169,7 @@ export class PopupView extends ViewObject {
     
     render() {
         return (
-            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style, {height: this.state.layout.keyboardHeight}]}>
+            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style, {height: this.state.layout.box.height}]}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
                 <View style={styles.content}>
                     <View ref='tooltip' style={styles.tooltip} onLayout={(event) => {this._onLayoutTooltip(event)}}>
@@ -181,30 +191,30 @@ export class PopupView extends ViewObject {
     
     _onLayoutTooltip(event) {
         let dimensions = event.nativeEvent.layout;
-        this.setState({
-            layout: {
-                tooltip: {
-                    width: dimensions.width,
-                    height: dimensions.height,
-                    x: dimensions.x,
-                    y: dimensions.y
-                }
-            }
-        });
+        // this.setState({
+        //     layout: {
+        //         tooltip: {
+        //             width: dimensions.width,
+        //             height: dimensions.height,
+        //             x: dimensions.x,
+        //             y: dimensions.y
+        //         }
+        //     }
+        // });
     }
     
     _onLayoutBox(event) {
         let dimensions = event.nativeEvent.layout;
-        this.setState({
-            layout: {
-                box: {
-                    width: dimensions.width,
-                    height: dimensions.height,
-                    x: dimensions.x,
-                    y: dimensions.y
-                }
-            }
-        });
+        // this.setState({
+        //     layout: {
+        //         box: {
+        //             width: dimensions.width,
+        //             height: dimensions.height,
+        //             x: dimensions.x,
+        //             y: dimensions.y
+        //         }
+        //     }
+        // });
     }
 }
 
