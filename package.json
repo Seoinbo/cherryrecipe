@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "link": "rnpm link realm; rnpm link react-native-keyboardevents"
+    "link": "rnpm link realm; rnpm link react-native-keyboardevents",
+    "realm-forward": "adb forward tcp:8082 tcp:8082;"
   },
   "dependencies": {
     "react": "^0.14.8",

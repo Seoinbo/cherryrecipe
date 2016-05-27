@@ -8,10 +8,12 @@ import {
     ScrollView,
     TouchableHighlight
 } from 'react-native';
+import Realm from 'realm';
+import {LocalStorage} from './services/local-storage';
 import {Nav} from './components/nav/nav';
 import {Icon} from './components/icon/icon';
 import {PopupViewLabel} from './components/popup-view-label/popup-view-label';
-
+import {UserData} from './schemas/user-data';
 
 const actives = {
     labelExpend: false
@@ -23,6 +25,15 @@ var test = "navi";
 class Cherryrecipe extends Component {
     constructor() {
         super();
+        
+        // Set userid.
+        this.user = new UserData();
+        this.user.realm.write(() => {
+            this.user.realm.create('User', {
+                id: 'g1625346125341653'
+            }, true);
+        });
+        
         this.state = {
             currentLabelName: "All labels"
         };

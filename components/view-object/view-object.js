@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {EventEmitter} from '../../services/eventEmitter';
+import {EventEmitter} from '../../services/event-emitter';
 
 export class ViewObject extends Component {
     constructor() {
