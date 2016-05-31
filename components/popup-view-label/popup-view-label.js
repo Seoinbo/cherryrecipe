@@ -14,26 +14,28 @@ import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
 import {LabelItem} from './label-item.js';
 import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
-import {LabelData} from '../../schemas/label-data';
+import {LabelStorage} from '../../storage/label-storage';
 
 export class PopupViewLabel extends ViewObject {
     constructor() {
         super();
+        // localStorage via labels.
+        this.labelStorage = new LabelStorage();
+
+        // load label data.        
         var labelSource = new ListView.DataSource({rowHasChanged: this._labelDataChange}); 
         this.state = Object.assign(this.state, {
             arrLabelData: labelSource.cloneWithRows(this._getLabelData())
         });
-        
-        // localStorage via labels.
-        this.labelStorage = new LabelData();
     }
     
     _getLabelData() {
-        
-        console.log("con: ", this);
-        let data = this.labelStorage.realm.objects('Label');
-        console.log('lable: ', data);
-        
+        let data;
+        try {
+            data = this.labelStorage.realm.objects('Label');
+        } catch (e) {
+            data = [];
+        }
         return data;
     }
     
@@ -51,12 +53,14 @@ export class PopupViewLabel extends ViewObject {
         return (
             <PopupView ref="popupView" 
                 style={[styles.popupView, this.props.style]}
+                headerButtons={{icon: 'add', callback: this._addLabel}}
                 boxHeight={350}
                 title="Labels"
                 tooltip="라벨을 선택해주세요">
                 <KeyboardAwareListView
                     renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                     keyboardShouldPersistTaps={true} 
+                    enableEmptySections={true}
                     dataSource={this.state.arrLabelData}
                     renderRow={(rowData, sectionID, rowID, highlightRow) => {
                         return this._renderRow(rowData)}
@@ -77,6 +81,19 @@ export class PopupViewLabel extends ViewObject {
     toggle() {
         this.refs.popupView.toggle();
     }
+    
+    _addLabel() {
+        this.labelStorage.add({
+            id: 'string',
+            index: {type: 'int', default: 0, optional: true},
+            owner: 'string',
+            name: {type: 'string', optional: true},
+            updated: 'number',
+            removed: {type: 'bool', default: false, optional: true},
+            recipes: {type: 'list', objectType: 'string', optional: true}
+        });
+    }
+    
 }
 
 const styles = StyleSheet.create({

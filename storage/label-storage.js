@@ -1,12 +1,19 @@
-import {Schema} from './schema';
+import {LocalStorage} from './local-storage';
 
-export class LabelData extends Schema {
+export class LabelStorage extends LocalStorage {
+    
     constructor() {
-        super([LabelData.schema]);
+        super([LabelStorage.schema]);
+    }
+    
+    add(data) {
+        this.realm.write(() => {
+            this.realm.create(LabelStorage.schema.name, data);
+        });
     }
 }
 
-LabelData.schema = {
+LabelStorage.schema = {
     name: 'Label',
     properties: {
         id: 'string',

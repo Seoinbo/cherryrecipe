@@ -1,7 +1,6 @@
 import Realm from 'realm';
-import {LocalStorage} from '../services/local-storage';
 
-export class Schema {
+export class LocalStorage {
     constructor(schema) {
         // Set userid.
         this.realm = new Realm({
@@ -10,3 +9,5 @@ export class Schema {
         });
     }
 }
+
+LocalStorage.schemaVersion = 0;

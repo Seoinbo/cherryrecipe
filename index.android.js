@@ -9,11 +9,10 @@ import {
     TouchableHighlight
 } from 'react-native';
 import Realm from 'realm';
-import {LocalStorage} from './services/local-storage';
 import {Nav} from './components/nav/nav';
 import {Icon} from './components/icon/icon';
 import {PopupViewLabel} from './components/popup-view-label/popup-view-label';
-import {UserData} from './schemas/user-data';
+import {UserStorage} from './storage/user-storage';
 
 const actives = {
     labelExpend: false
@@ -27,7 +26,7 @@ class Cherryrecipe extends Component {
         super();
         
         // Set userid.
-        this.user = new UserData();
+        this.user = new UserStorage();
         this.user.realm.write(() => {
             this.user.realm.create('User', {
                 id: 'g1625346125341653'

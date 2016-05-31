@@ -118,6 +118,21 @@ export class PopupView extends ViewObject {
     }
     
     render() {
+        // 헤더 버튼 추가
+        let headerButtons = [{
+            icon: 'expand_more',
+            callback: () => {this.close()} 
+        }];
+        if (this.props.headerButtons instanceof Object) {
+            headerButtons.push(this.props.headerButtons);
+        } else if (this.props.headerButtons instanceof Array) {
+            for (var key in this.props.headerButtons) {
+                if (object.hasOwnProperty(key)) {
+                    headerButtons.push(object[key]);
+                }
+            }
+        }
+
         return (
             <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
@@ -128,7 +143,13 @@ export class PopupView extends ViewObject {
                     <Animated.View style={[styles.box, {height: this.props.boxHeight}, {transform: this.state.animate.box.xy.getTranslateTransform()}]}>
                         <View style={styles.header}>
                             <Text style={styles.subject}>{this.props.title}</Text>
-                            <Button style={styles.closeButton} icon="expand_more" onPress={() => {this.close()}} />
+                            <View style={styles.buttons}>
+                                {
+                                    headerButtons.reverse().map( function(button, i) {
+                                        return <Button key={i} style={styles.closeButton} icon={button.icon} onPress={button.callback} />; 
+                                    })
+                                }
+                            </View>
                         </View>
                         <View style={styles.body}>
                             {React.Children.map(this.props.children, React.cloneElement)}
@@ -176,6 +197,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 60
+    },
+    buttons: {
+        flexDirection: 'row',
     },
     subject: {
         marginLeft: 25,
