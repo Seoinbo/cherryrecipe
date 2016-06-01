@@ -14,6 +14,8 @@ import {Icon} from './components/icon/icon';
 import {PopupViewLabel} from './components/popup-view-label/popup-view-label';
 import {UserStorage} from './storage/user-storage';
 
+export const gUserid = 1234;
+
 const actives = {
     labelExpend: false
 };

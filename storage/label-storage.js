@@ -1,27 +1,39 @@
 import {LocalStorage} from './local-storage';
+import {Util} from '../services/util';
 
 export class LabelStorage extends LocalStorage {
-    
     constructor() {
-        super([LabelStorage.schema]);
+        super();
     }
     
-    add(data) {
+    add(labelData) {
+        let index;
+        if (labelData.index === undefined) {
+            try {
+                index = this.realm.objects(LabelStorage.schema.name).length;
+            } catch (e) {
+                index = 0;
+            }
+        }
+        let data = Object.assign({
+            id: this.createID(labelData.owner),
+            index: index,
+            updated: Util.toUnixTimestamp(Util.now())
+        }, labelData);
         this.realm.write(() => {
-            this.realm.create(LabelStorage.schema.name, data);
+            this.realm.create(this.name, data);
         });
     }
-}
-
-LabelStorage.schema = {
-    name: 'Label',
-    properties: {
-        id: 'string',
-        index: {type: 'int', default: 0, optional: true},
-        owner: 'string',
-        name: {type: 'string', optional: true},
-        updated: 'number',
-        removed: {type: 'bool', default: false, optional: true},
-        recipes: {type: 'list', objectType: 'string', optional: true}
+    
+    delete(labelID) {
+        
+    }
+    
+    createID(userid) {
+        return userid + '-l' + Util.uniqID();
+    }
+    
+    get name() {
+        return 'Label';
     }
 }
