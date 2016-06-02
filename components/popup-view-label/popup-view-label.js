@@ -44,13 +44,18 @@ export class PopupViewLabel extends ViewObject {
     }
     
     _labelDataChange(r1, r2) {
-        console.log('callback', r1, r2);
+        // console.log('callback', r1, r2);
     }
     
     _renderRow(data) {
         return (
-            <LabelItem source={data}/>
+            <LabelItem source={data} onRemove={()=>{this._removeLabel(data.id)}}/>
         )
+    }
+    
+    _updateRow() {
+        let d = this._getLabelData();
+        this.setState({arrLabelData: this.state.arrLabelData.cloneWithRows(d)});
     }
     
     render() {
@@ -90,6 +95,17 @@ export class PopupViewLabel extends ViewObject {
         this.labelStorage.add({
             owner: this.userStorage.userid
         });
+        
+        setTimeout( () => {
+            this._updateRow();
+        }, 100);
+    }
+    
+    _removeLabel(labelID) {
+        this.labelStorage.delete(labelID);
+        setTimeout( () => {
+            this._updateRow();
+        }, 100);
     }
 }
 

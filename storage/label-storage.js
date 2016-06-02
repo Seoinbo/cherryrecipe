@@ -10,7 +10,7 @@ export class LabelStorage extends LocalStorage {
         let index;
         if (labelData.index === undefined) {
             try {
-                index = this.realm.objects(LabelStorage.schema.name).length;
+                index = this.realm.objects(this.name).length;
             } catch (e) {
                 index = 0;
             }
@@ -26,7 +26,15 @@ export class LabelStorage extends LocalStorage {
     }
     
     delete(labelID) {
-        
+        let label = this.realm.objects(this.name).filtered('id = $0', labelID);
+        this.realm.write(() => {
+            try {
+                this.realm.delete(label);
+            } catch(e) {
+                
+            }
+            
+        });
     }
     
     createID(userid) {

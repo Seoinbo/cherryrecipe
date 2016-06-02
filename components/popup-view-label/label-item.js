@@ -25,8 +25,8 @@ export class LabelItem extends ViewObject {
                 <TextInput style={styles.labelName} 
                     placeholder="input your label name"
                     onFocus={() => {this._onLabelNameFocus()}}
-                    onBlur={() => {this._onLabelNameBlur()}}>{this.props.source.name}</TextInput>
-                <Button style={styles.remove} icon="clear" visible={this.state.editing} onPress={()=>{this._delete(labelID)}}/>
+                    onBlur={() => {this._onLabelNameBlur()}}>{this.props.source.id}</TextInput>
+                <Button style={styles.remove} icon="clear" visible={this.state.editing} onPress={this.props.onRemove}/>
             </View>
         )
     }
@@ -36,14 +36,7 @@ export class LabelItem extends ViewObject {
     }
     
     _onLabelNameBlur() {
-        this.exitEditMode();
-    }
-    
-    _delete(id) {
-        if (!this.labelStorage) {
-            this.labelStorage = new LabelStorage();
-        }
-        this.labelStorage.delete(id);
+        // this.exitEditMode();
     }
 }
 
