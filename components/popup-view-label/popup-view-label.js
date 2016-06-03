@@ -44,7 +44,7 @@ export class PopupViewLabel extends ViewObject {
     }
     
     _labelDataChange(r1, r2) {
-        // console.log('callback', r1, r2);
+        return r1 !== r2;
     }
     
     _renderRow(data) {
@@ -54,8 +54,7 @@ export class PopupViewLabel extends ViewObject {
     }
     
     _updateRow() {
-        let d = this._getLabelData();
-        this.setState({arrLabelData: this.state.arrLabelData.cloneWithRows(d)});
+        this.setState({arrLabelData: this.state.arrLabelData.cloneWithRows(this._getLabelData())});
     }
     
     render() {
@@ -66,8 +65,7 @@ export class PopupViewLabel extends ViewObject {
                 boxHeight={350}
                 title="Labels"
                 tooltip="라벨을 선택해주세요">
-                <KeyboardAwareListView
-                    renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+                <ListView
                     keyboardShouldPersistTaps={true} 
                     enableEmptySections={true}
                     dataSource={this.state.arrLabelData}

@@ -36,7 +36,7 @@ export class LabelItem extends ViewObject {
     }
     
     _onLabelNameBlur() {
-        // this.exitEditMode();
+        this.exitEditMode();
     }
 }
 

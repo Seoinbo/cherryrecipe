@@ -30,6 +30,9 @@ export class Icon extends Component {
         case 'add':
             path = require("../../images/icons/ic_add.png");
             break;
+        case 'done':
+            path = require("../../images/icons/ic_done.png");
+            break;
         }
         
         let imgSize = {};

@@ -4,17 +4,21 @@ import {
     Animated,
     Easing,
     Text,
-    View
+    View,
+    DeviceEventEmitter
 } from 'react-native';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
 import {Overlay} from '../overlay/overlay';
 import {Layout} from '../../services/layout';
+import {hideKeyboard} from '../../services/keyboard';
 
 export class PopupView extends ViewObject {
     constructor() {
         super();
         this.state = Object.assign(this.state, {
+            closeButtonMode: 'hide', // 'hide'|'ok',
+            hei: 0,
             animate: {
                 tooltipText: {
                     opacity: new Animated.Value(0),
@@ -42,6 +46,19 @@ export class PopupView extends ViewObject {
 
     
     componentDidMount() {
+        // 키보드의 상태에 따라 닫기 버튼 모드를 변경.
+        DeviceEventEmitter.addListener('keyboardDidShow', () => { this._changeCloseButtonMode('ok') });
+        DeviceEventEmitter.addListener('keyboardDidHide', () => { this._changeCloseButtonMode('close') });
+    }
+    
+    _changeCloseButtonMode(mode = 'close') {
+        let h;
+        if (mode == 'ok') {
+            h = 280;
+        } else {
+            h = 0;
+        }
+        this.setState({closeButtonMode: mode, hei: h});
     }
    
     open() {
@@ -118,11 +135,16 @@ export class PopupView extends ViewObject {
     }
     
     render() {
+        // 닫기 버튼
+        let closeButtonComponent;
+        if (this.state.closeButtonMode == 'ok') {
+            closeButtonComponent = <Button style={styles.closeButton} icon="done" onPress={hideKeyboard} />;
+        } else { // 'hide'
+            closeButtonComponent = <Button style={styles.closeButton} icon="expand_more" onPress={() => {this.close()}} />;
+        }
+        
         // 헤더 버튼 추가
-        let headerButtons = [{
-            icon: 'expand_more',
-            callback: () => {this.close()} 
-        }];
+        let headerButtons = [];
         if (this.props.headerButtons instanceof Object) {
             headerButtons.push(this.props.headerButtons);
         } else if (this.props.headerButtons instanceof Array) {
@@ -132,7 +154,7 @@ export class PopupView extends ViewObject {
                 }
             }
         }
-
+        
         return (
             <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
@@ -146,15 +168,24 @@ export class PopupView extends ViewObject {
                             <View style={styles.buttons}>
                                 {
                                     headerButtons.reverse().map( function(button, i) {
-                                        return <Button key={i} style={styles.closeButton} icon={button.icon} onPress={button.callback} />; 
+                                        return <Button key={i} icon={button.icon} onPress={button.callback} />; 
                                     })
                                 }
+                                {closeButtonComponent}
                             </View>
                         </View>
                         <View style={styles.body}>
                             {React.Children.map(this.props.children, React.cloneElement)}
                         </View>
                     </Animated.View>
+                    <View style={{
+                            height: this.state.hei,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            backgroundColor: '#002233'
+                        }}>
+                    </View>
                 </View>
             </Overlay>
         )        
