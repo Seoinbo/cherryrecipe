@@ -23,6 +23,7 @@ export class LabelItem extends ViewObject {
             <View style={[this.props.style, styles.labelItem]}>
                 <Button style={styles.move} icon="dehaze" rendering={this.state.editing}/>
                 <TextInput style={styles.labelName} 
+                    underlineColorAndroid="transparent"
                     placeholder="input your label name"
                     onFocus={() => {this._onLabelNameFocus()}}
                     onBlur={() => {this._onLabelNameBlur()}}>{this.props.source.id}</TextInput>

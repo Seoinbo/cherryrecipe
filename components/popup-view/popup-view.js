@@ -5,7 +5,9 @@ import {
     Easing,
     Text,
     View,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    Dimensions,
+    LayoutAnimation
 } from 'react-native';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
@@ -47,18 +49,25 @@ export class PopupView extends ViewObject {
     
     componentDidMount() {
         // 키보드의 상태에 따라 닫기 버튼 모드를 변경.
-        DeviceEventEmitter.addListener('keyboardDidShow', () => { this._changeCloseButtonMode('ok') });
-        DeviceEventEmitter.addListener('keyboardDidHide', () => { this._changeCloseButtonMode('close') });
+        this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => { this._changeCloseButtonMode(event, 'ok') });
+        this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => { this._changeCloseButtonMode(event, 'close') });
     }
     
-    _changeCloseButtonMode(mode = 'close') {
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
+    }
+
+    _changeCloseButtonMode(e, mode = 'close') {
         let h;
-        if (mode == 'ok') {
-            h = 280;
+        if (mode == 'ok') { // keyboardDidShow
+            h = Dimensions.get('window').height - e.endCoordinates.height;
         } else {
-            h = 0;
+            h = Dimensions.get('window').height;
         }
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({closeButtonMode: mode, hei: h});
+        
     }
    
     open() {
@@ -158,7 +167,7 @@ export class PopupView extends ViewObject {
         return (
             <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
-                <View style={styles.content}>
+                <View style={[styles.content, {height: this.state.hei}]} removeClippedSubviews={true}>
                     <View ref='tooltip' style={styles.tooltip}>
                         <Animated.Text style={[styles.tooltipText, {opacity: this.state.animate.tooltipText.opacity, transform: this.state.animate.tooltipText.xy.getTranslateTransform()}]}>{this.props.tooltip}</Animated.Text>
                     </View>
@@ -178,14 +187,6 @@ export class PopupView extends ViewObject {
                             {React.Children.map(this.props.children, React.cloneElement)}
                         </View>
                     </Animated.View>
-                    <View style={{
-                            height: this.state.hei,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            backgroundColor: '#002233'
-                        }}>
-                    </View>
                 </View>
             </Overlay>
         )        
@@ -200,14 +201,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#e5e5e5'
     },
     content: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'absolute',
         top: 0,
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        overflow: 'hidden'
     },
     tooltip: {
         flex: 1,

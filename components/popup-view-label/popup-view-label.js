@@ -62,7 +62,7 @@ export class PopupViewLabel extends ViewObject {
             <PopupView ref="popupView" 
                 style={[styles.popupView, this.props.style]}
                 headerButtons={{icon: 'add', callback: ()=>{this._addLabel()}}}
-                boxHeight={350}
+                boxHeight={290}
                 title="Labels"
                 tooltip="라벨을 선택해주세요">
                 <ListView

@@ -6,7 +6,11 @@ import {
     View,
     TextInput,
     ScrollView,
-    TouchableHighlight
+    TouchableHighlight,
+    DeviceEventEmitter,
+    LayoutAnimation,
+    Alert,
+    Dimensions
 } from 'react-native';
 import Realm from 'realm';
 import {Nav} from './components/nav/nav';
@@ -14,53 +18,69 @@ import {Icon} from './components/icon/icon';
 import {PopupViewLabel} from './components/popup-view-label/popup-view-label';
 import {UserStorage} from './storage/user-storage';
 
-export const gUserid = 1234;
-
-const actives = {
-    labelExpend: false
-};
-
-var act = false;
-var test = "navi";
+const { width, height } = Dimensions.get('window')
 
 class Cherryrecipe extends Component {
     constructor() {
         super();
-        
-        // Set userid.
-        this.user = new UserStorage();
-        this.user.realm.write(() => {
-            this.user.realm.create('User', {
-                id: 'g1625346125341653'
-            }, true);
-        });
-        
         this.state = {
-            currentLabelName: "All labels"
+            visibleHeight: height
         };
+        DeviceEventEmitter.addListener('keyboardDidShow', this.keyboardDidShow.bind(this))
+        DeviceEventEmitter.addListener('keyboardDidHide', this.keyboardDidHide.bind(this))
+    }
+
+    omponentWillMount () {
+        
+    }
+
+    componentWillUnmount () {
+        DeviceEventEmitter.removeAllListeners('keyboardDidShow')
+        DeviceEventEmitter.removeAllListeners('keyboardDidHide')
+    }
+
+    keyboardDidShow (e) {
+        // Animation types easeInEaseOut/linear/spring
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+        let newSize = height - e.endCoordinates.height
+        this.setState({
+            visibleHeight: newSize
+        })
+        console.log("show", newSize);
+    }
+
+    keyboardDidHide (e) {
+        // Animation types easeInEaseOut/linear/spring
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+        this.setState({
+            visibleHeight: height
+        })
+        console.log("hide", height);
+
     }
    
     render() {
-        let expendIconName = actives.labelExpend ? 'expand_less' : 'expand_more';
         return (
-            <View id="aaa" style={styles.container}>
-                <View>
-                    <Nav style={styles.nav} childType="object">
-                        <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
-                            <View style={styles.innerNav}>
-                                <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
-                                <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
-                            </View>
-                        </TouchableHighlight>
-                    </Nav>
+            <View style={[styles.container, {height: this.state.visibleHeight}]}>
+                <View style={styles.box}>
+                    <TextInput
+                    ref='username'
+                    style={styles.input}
+                    value="12345"
+                    keyboardType='default'
+                    returnKeyType='search'
+                    underlineColorAndroid='transparent'/>
+                      <TextInput
+                    ref='username2'
+                    autoCapitalize="none"
+                    style={styles.input}
+                    value="12345"
+                    keyboardType='default'
+                    returnKeyType='search'
+                    underlineColorAndroid='transparent'/>
                 </View>
-                <PopupViewLabel ref="popupViewLabel" isVisible={false}></PopupViewLabel>
             </View>
         );
-    }
-    
-    _labelListOpen() {
-        this.refs.popupViewLabel.toggle();
     }
 }
 
@@ -68,28 +88,17 @@ const styles = StyleSheet.create({
     sty: {
     },
     container: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#e5e5e5',
+        justifyContent: 'center',
+        backgroundColor: "#000000"
     },
-    nav: {
-        height: 50,
-    },
-    innerNav: {
-        alignItems: 'center'
-    },
-    labelName: {
-        fontSize: 18
-    },
-    exandIcon: {
-        marginTop: -5
-    },
-    layer: {
-        position: 'absolute',
-        top: 50,
+    box: {
+        height: 200,
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        top: 0,
+        marginTop: 370,
+        backgroundColor: "#5f9ea0"
         
     }
 });
