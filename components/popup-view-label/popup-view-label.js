@@ -14,8 +14,8 @@ import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
 import {LabelItem} from './label-item.js';
 import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
-import {UserStorage} from '../../storage/user-storage';
-import {LabelStorage} from '../../storage/label-storage';
+import {UserStorage} from '../../storages/user-storage';
+import {LabelStorage} from '../../storages/label-storage';
 
 export class PopupViewLabel extends ViewObject {
     constructor() {

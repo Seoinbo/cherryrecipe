@@ -9,7 +9,7 @@ import {Util} from '../../services/util';
 import {commStyles} from '../styles';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
-import {LabelStorage} from '../../storage/label-storage';
+import {LabelStorage} from '../../storages/label-storage';
 
 export class LabelItem extends ViewObject {
     constructor(props) {

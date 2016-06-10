@@ -16,7 +16,7 @@ import Realm from 'realm';
 import {Nav} from './components/nav/nav';
 import {Icon} from './components/icon/icon';
 import {PopupViewLabel} from './components/popup-view-label/popup-view-label';
-import {UserStorage} from './storage/user-storage';
+import {UserStorage} from './storages/user-storage';
 
 const { width, height } = Dimensions.get('window')
 

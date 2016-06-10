@@ -16,7 +16,7 @@ import {Icon} from './icon/icon';
 import {PopupViewLabel} from './popup-view-label/popup-view-label';
 
 // Storages
-import {UserStorage} from '../storage/user-storage';
+import {UserStorage} from '../storages/user-storage';
 
 import {keyboardWillShow} from '../actions/device';
 
