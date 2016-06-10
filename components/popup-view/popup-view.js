@@ -43,30 +43,34 @@ export class PopupView extends ViewObject {
         });
     }
     
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return (
+    //         nextProps.todo !== this.props.todo ||
+    //         nextState.label !== this.state.label
+    //     );
+    // } 
+
     componentWillUpdate() {
     }
 
     
     componentDidMount() {
         // 키보드의 상태에 따라 닫기 버튼 모드를 변경.
-        this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => { this._changeCloseButtonMode(event, 'ok') });
+        // this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => { this._changeCloseButtonMode(event, 'ok') });
         this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => { this._changeCloseButtonMode(event, 'close') });
     }
     
     componentWillUnmount () {
-        this.keyboardDidShowListener.remove()
+        // this.keyboardDidShowListener.remove()
         this.keyboardDidHideListener.remove()
     }
 
     _changeCloseButtonMode(e, mode = 'close') {
-        let h;
-        if (mode == 'ok') { // keyboardDidShow
-            h = Dimensions.get('window').height - e.endCoordinates.height;
-        } else {
-            h = Dimensions.get('window').height;
+        if (mode == 'close') { // keyboardDidHide
+            this.setState({closeButtonMode: mode, hei: 0});
         }
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({closeButtonMode: mode, hei: h});
+        
         
     }
    
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#e5e5e5'
     },
     content: {
-        // flex: 1,
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'absolute',

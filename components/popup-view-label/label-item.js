@@ -5,14 +5,16 @@ import {
     TextInput,
     View,
 } from 'react-native';
+import {Util} from '../../services/util';
 import {commStyles} from '../styles';
 import {ViewObject} from '../view-object/view-object';
 import {Button} from '../button/button';
 import {LabelStorage} from '../../storage/label-storage';
 
 export class LabelItem extends ViewObject {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.props = props;
         this.labelStorage = null;
     }
     
@@ -33,6 +35,7 @@ export class LabelItem extends ViewObject {
     }
     
     _onLabelNameFocus() {
+        Util.apply(this.props.onFocus, [], this);
         this.enterEditMode();
     }
     

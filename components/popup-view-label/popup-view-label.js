@@ -28,7 +28,7 @@ export class PopupViewLabel extends ViewObject {
 
         // Load label data.        
         var labelSource = new ListView.DataSource({rowHasChanged: this._labelDataChange}); 
-        this.state = Object.assign(this.state, {
+        this.state = Object.assign({}, this.state, {
             arrLabelData: labelSource.cloneWithRows(this._getLabelData())
         });
     }
@@ -49,7 +49,11 @@ export class PopupViewLabel extends ViewObject {
     
     _renderRow(data) {
         return (
-            <LabelItem source={data} onRemove={()=>{this._removeLabel(data.id)}}/>
+            <LabelItem 
+                source={data}
+                onRemove={()=>{this._removeLabel(data.id)}}
+                onFocus={()=>{console.log("aaaaaa")}}
+            />
         )
     }
     

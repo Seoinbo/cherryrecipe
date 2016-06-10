@@ -26,9 +26,15 @@ export class Util {
         return objectArray;
     }
 
-    static lazyApply(count, length, callback, parameter = []) {
-        if (++count >= length && typeof callback === "function") {
-            callback.apply(null, parameter);
+    static apply(callback, parameter = [], context = null) {
+        if (typeof callback === "function") {
+            callback.apply(context, parameter);
+        }
+    }
+
+    static lazyApply(count, length, callback, parameter = [], context = null) {
+        if (++count >= length) {
+            Util.apply(callback, parameter, context);
         }
     }
 
