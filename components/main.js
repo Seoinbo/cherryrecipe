@@ -6,14 +6,16 @@ import {
     View,
     TextInput,
     ScrollView,
-    TouchableHighlight
+    TouchableHighlight,
+    Platform
 } from 'react-native';
 import Realm from 'realm';
 
 // Components
 import {Nav} from './nav/nav';
 import {Icon} from './icon/icon';
-import {PopupViewLabel} from './popup-view-label/popup-view-label';
+import PopupViewLabel from './popup-view-label/popup-view-label';
+import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
 
 // Storages
 import {UserStorage} from '../storages/user-storage';
@@ -50,30 +52,34 @@ export default class Main extends Component {
 
    
     render() {
-        let {dispatch} = this.props;
-
+        let {dispatch, keyboardState} = this.props;
         let expendIconName = actives.labelExpend ? 'expand_less' : 'expand_more';
 
-        // this.props.dispatch(keyboardWillShow([1]));
-
-        console.log("props: ", this.props);
-        console.log("store1: ", this.state);
+        let keyboardSpacer;
+        if (Platform.OS != 'android') {
+            keyboardSpacer = <keyboardSpacer/>
+        }
         
-
-
         return (
-            <View id="aaa" style={styles.container}>
-                <View>
-                    <Nav style={styles.nav} childType="object">
-                        <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
-                            <View style={styles.innerNav}>
-                                <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
-                                <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
-                            </View>
-                        </TouchableHighlight>
-                    </Nav>
+            <View style={styles.container}>
+                <View style={styles.wrapper}>
+                    <View>
+                        <Nav style={styles.nav} childType="object">
+                            <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
+                                <View style={styles.innerNav}>
+                                    <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
+                                    <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
+                                </View>
+                            </TouchableHighlight>
+                        </Nav>
+                    </View>
+                    <PopupViewLabel
+                        ref="popupViewLabel"
+                        isVisible={false}
+                        {...{dispatch, keyboardState}}>
+                    </PopupViewLabel>
                 </View>
-                <PopupViewLabel ref="popupViewLabel" isVisible={false}></PopupViewLabel>
+                {keyboardSpacer}
             </View>
         );
     }
@@ -84,12 +90,20 @@ export default class Main extends Component {
 }
 
 const styles = StyleSheet.create({
-    sty: {
-    },
     container: {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: '#e5e5e5',
+    },
+    wrapper: {
+        flex: 1
+    },
+    keyboardSpace: {
+        height: 200,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#000000'
     },
     nav: {
         height: 50,

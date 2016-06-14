@@ -16,30 +16,15 @@ import {Layout} from '../../services/layout';
 import {hideKeyboard} from '../../services/keyboard';
 
 export class PopupView extends ViewObject {
-    constructor() {
-        super();
-        this.state = Object.assign(this.state, {
+    constructor(props, context) {
+        super(props, context);
+        this.state = Object.assign({}, this.state, {
             closeButtonMode: 'hide', // 'hide'|'ok',
-            hei: 0,
-            animate: {
-                tooltipText: {
-                    opacity: new Animated.Value(0),
-                    xy: new Animated.ValueXY({x: 0, y: 15})
-                },
-                bg: {
-                    opacity: new Animated.Value(0)
-                },
-                box: {
-                    xy: new Animated.ValueXY({x: 0, y: 300})
-                }
-            },
-            layout: {
-                windowWidth: 0,
-                windowHeight: 0,
-                keyboardHeight: 300,
-                tooltip: Layout.DefaultValue(),
-                box: Layout.DefaultValue()
-            }
+            boxHeight: props.boxHeight,
+            animateTooltipTextOpacity: new Animated.Value(0),
+            animateTooltipTextXy: new Animated.ValueXY({x: 0, y: 15}),
+            animateBgOpacity: new Animated.Value(0), 
+            animateBoxXy: new Animated.ValueXY({x: 0, y: 300})
         });
     }
     
@@ -56,22 +41,39 @@ export class PopupView extends ViewObject {
     
     componentDidMount() {
         // 키보드의 상태에 따라 닫기 버튼 모드를 변경.
-        // this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => { this._changeCloseButtonMode(event, 'ok') });
-        this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => { this._changeCloseButtonMode(event, 'close') });
+        this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => {
+             this._changeCloseButtonMode('ok');
+             this._updateBoxHeight(event); 
+        });
+        this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => {
+            this._changeCloseButtonMode('close');
+            this._updateBoxHeight(); 
+        });
     }
     
     componentWillUnmount () {
-        // this.keyboardDidShowListener.remove()
+        this.keyboardDidShowListener.remove()
         this.keyboardDidHideListener.remove()
     }
 
-    _changeCloseButtonMode(e, mode = 'close') {
-        if (mode == 'close') { // keyboardDidHide
-            this.setState({closeButtonMode: mode, hei: 0});
+    _changeCloseButtonMode(mode = 'close') {
+        this.setState({
+            closeButtonMode: mode
+        });
+    }
+
+    _updateBoxHeight(e) {
+        let {width, height} = Dimensions.get('window');
+        let keyboardSpace = 0;
+        if (e && e !== null) {
+            keyboardSpace = e.endCoordinates.height;
         }
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        
-        
+        let screenHeight = height - keyboardSpace;
+        let boxHeight = this.props.boxHeight; 
+        if (boxHeight > screenHeight) {
+            boxHeight = screenHeight;
+        } 
+        this.setState({boxHeight: boxHeight});
     }
    
     open() {
@@ -79,14 +81,14 @@ export class PopupView extends ViewObject {
         
         Animated.parallel([
             Animated.timing(
-                this.state.animate.tooltipText.opacity, {
+                this.state.animateTooltipTextOpacity, {
                     delay: 230,
                     duration: 250,
                     toValue: 1
                 }
             ),
             Animated.timing(
-                this.state.animate.tooltipText.xy, {
+                this.state.animateTooltipTextXy, {
                     delay: 230,
                     duration: 250,
                     easing: Easing.out(Easing.quad),
@@ -94,14 +96,15 @@ export class PopupView extends ViewObject {
                 }
             ),
             Animated.timing(
-                this.state.animate.bg.opacity, {
+                this.state.animateBgOpacity, {
                     duration: 250,
                     toValue: 1
                 }
             ),
             Animated.timing(
-                this.state.animate.box.xy, {
-                    duration: 250,
+                this.state.animateBoxXy, {
+                    duration: 350,
+                    easing: Easing.out(Easing.quad),
                     toValue: {x: 0, y: 0}
                 }
             )
@@ -111,25 +114,25 @@ export class PopupView extends ViewObject {
     close() {
         Animated.parallel([
             Animated.timing(
-                this.state.animate.tooltipText.opacity, {
+                this.state.animateTooltipTextOpacity, {
                     duration: 250,
                     toValue: 0
                 }
             ),
             Animated.timing(
-                this.state.animate.tooltipText.xy, {
+                this.state.animateTooltipTextXy, {
                     duration: 250,
                     toValue: {x: 0, y: 15}
                 }
             ),
             Animated.timing(
-                this.state.animate.bg.opacity, {
+                this.state.animateBgOpacity, {
                     duration: 250,
                     toValue: 0
                 }
             ),
             Animated.timing(
-                this.state.animate.box.xy, {
+                this.state.animateBoxXy, {
                     duration: 250,
                     toValue: {x: 0, y: 300}
                 }
@@ -170,12 +173,12 @@ export class PopupView extends ViewObject {
         
         return (
             <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
-                <Animated.View style={[styles.bg, {opacity: this.state.animate.bg.opacity}]}></Animated.View>
-                <View style={[styles.content, {height: this.state.hei}]} removeClippedSubviews={true}>
+                <Animated.View style={[styles.bg, {opacity: this.state.animateBgOpacity}]}></Animated.View>
+                <View style={[styles.content]} removeClippedSubviews={true}>
                     <View ref='tooltip' style={styles.tooltip}>
-                        <Animated.Text style={[styles.tooltipText, {opacity: this.state.animate.tooltipText.opacity, transform: this.state.animate.tooltipText.xy.getTranslateTransform()}]}>{this.props.tooltip}</Animated.Text>
+                        <Animated.Text style={[styles.tooltipText, {opacity: this.state.animateTooltipTextOpacity, transform: this.state.animateTooltipTextXy.getTranslateTransform()}]}>{this.props.tooltip}</Animated.Text>
                     </View>
-                    <Animated.View style={[styles.box, {height: this.props.boxHeight}, {transform: this.state.animate.box.xy.getTranslateTransform()}]}>
+                    <Animated.View style={[styles.box, {height: this.state.boxHeight}, {transform: this.state.animateBoxXy.getTranslateTransform()}]}>
                         <View style={styles.header}>
                             <Text style={styles.subject}>{this.props.title}</Text>
                             <View style={styles.buttons}>

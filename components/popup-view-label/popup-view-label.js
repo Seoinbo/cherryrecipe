@@ -17,7 +17,9 @@ import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
 import {UserStorage} from '../../storages/user-storage';
 import {LabelStorage} from '../../storages/label-storage';
 
-export class PopupViewLabel extends ViewObject {
+import {connect} from 'react-redux';
+
+export default class PopupViewLabel extends ViewObject {
     constructor() {
         super();
         // LocalStorage via users.
@@ -48,13 +50,18 @@ export class PopupViewLabel extends ViewObject {
     }
     
     _renderRow(data) {
+        let {dispatch, keyboardState} = this.props;
         return (
             <LabelItem 
                 source={data}
                 onRemove={()=>{this._removeLabel(data.id)}}
                 onFocus={()=>{console.log("aaaaaa")}}
+                {...{dispatch, keyboardState}}
             />
         )
+    }
+
+    componentWillReceiveProps(next) {
     }
     
     _updateRow() {
@@ -62,13 +69,15 @@ export class PopupViewLabel extends ViewObject {
     }
     
     render() {
+        let {dispatch, keyboardState} = this.props;
         return (
             <PopupView ref="popupView" 
                 style={[styles.popupView, this.props.style]}
                 headerButtons={{icon: 'add', callback: ()=>{this._addLabel()}}}
-                boxHeight={290}
+                boxHeight={350}
                 title="Labels"
-                tooltip="라벨을 선택해주세요">
+                tooltip={"라벨을 선택해주세요"}
+                {...{dispatch, keyboardState}}>
                 <ListView
                     keyboardShouldPersistTaps={true} 
                     enableEmptySections={true}
@@ -115,3 +124,11 @@ const styles = StyleSheet.create({
     popupView: {
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        keyboardState: state.keyboardState
+    }
+}
+
+// export default connect(mapStateToProps)(PopupViewLabel);

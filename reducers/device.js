@@ -12,8 +12,15 @@ const keyboardInitailState = {
 export function keyboardState(state = keyboardInitailState, action) {
     switch (action.type) {
         case KEYBOARD_WILL_SHOW:
+            if (action.event) {
+                state = action.event;
+            } else {
+                state.endCoordinates.height = 280;
+            }
+            return state;
+
         case KEYBOARD_WILL_HIDE:
         default:
-            return state; 
+            return keyboardInitailState; 
     }
 }

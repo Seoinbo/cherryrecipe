@@ -20,7 +20,6 @@ export class LabelItem extends ViewObject {
     
     render() {
         let labelID = this.props.source.id;
-        
         return (
             <View style={[this.props.style, styles.labelItem]}>
                 <Button style={styles.move} icon="dehaze" rendering={this.state.editing}/>
@@ -35,7 +34,6 @@ export class LabelItem extends ViewObject {
     }
     
     _onLabelNameFocus() {
-        Util.apply(this.props.onFocus, [], this);
         this.enterEditMode();
     }
     

@@ -4,7 +4,6 @@ import Main from '../components/main';
 
 class MainContainer extends Component {
     render() {
-        console.log("props2: ", this.props);
         return (
             <Main {...this.props} />
         )
@@ -12,9 +11,10 @@ class MainContainer extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log("state: ", state);
     return {
         keyboardState: state.keyboardState
     }
 }
 
-export default connect(mapStateToProps)(MainContainer)
+export default connect(mapStateToProps)(MainContainer);
