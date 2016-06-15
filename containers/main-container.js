@@ -11,7 +11,6 @@ class MainContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log("state: ", state);
     return {
         keyboardState: state.keyboardState
     }

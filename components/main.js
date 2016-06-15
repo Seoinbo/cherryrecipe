@@ -13,7 +13,7 @@ import Realm from 'realm';
 
 // Components
 import {Nav} from './nav/nav';
-import {Icon} from './icon/icon';
+import Icon from './icon/icon';
 import PopupViewLabel from './popup-view-label/popup-view-label';
 import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
 
@@ -38,18 +38,10 @@ export default class Main extends Component {
             }, true);
         });
 
-        console.log("a", this.props);
-
         this.state = Object.assign({}, this.state, {
             currentLabelName: "All labels"
         });
     }
-
-    componentWillReceiveProps(props) {
-        console.log("a: ", props);
-        console.log("b: ", this.props);
-    }
-
    
     render() {
         let {dispatch, keyboardState} = this.props;
@@ -57,9 +49,9 @@ export default class Main extends Component {
 
         let keyboardSpacer;
         if (Platform.OS != 'android') {
-            keyboardSpacer = <keyboardSpacer/>
+            keyboardSpacer = <KeyboardSpacer/>
         }
-        
+
         return (
             <View style={styles.container}>
                 <View style={styles.wrapper}>

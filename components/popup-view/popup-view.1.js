@@ -20,7 +20,7 @@ export class PopupView extends ViewObject {
         super(props, context);
         this.state = Object.assign({}, this.state, {
             closeButtonMode: 'hide', // 'hide'|'ok',
-            boxHeight: new Animated.Value(props.boxHeight),
+            boxHeight: props.boxHeight,
             animateTooltipTextOpacity: new Animated.Value(0),
             animateTooltipTextXy: new Animated.ValueXY({x: 0, y: 15}),
             animateBgOpacity: new Animated.Value(0), 
@@ -40,37 +40,14 @@ export class PopupView extends ViewObject {
 
     
     componentDidMount() {
+        // 키보드의 상태에 따라 닫기 버튼 모드를 변경.
         this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => {
-            // 키보드의 상태에 따라 팝업 닫기 버튼 모드를 다르게 한다.
-            this.setState({
-                closeButtonMode: 'ok'
-            });
-            
-            // box의 높이를 키보드 상태에 따라 다른게 적용.
-            let boxHeight = this.props.boxHeight;
-            let {height} = Dimensions.get('window');
-            let keyboardSpace = event.endCoordinates.height;
-            let screenHeight = height - keyboardSpace;
-            if (boxHeight > screenHeight) {
-                boxHeight = screenHeight;
-            }
-            Animated.timing(this.state.boxHeight, {
-                duration: 0,
-                toValue: boxHeight
-            }).start();
+             this._changeCloseButtonMode('ok');
+             this._updateBoxHeight(event); 
         });
-
         this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => {
-            this.setState({
-                closeButtonMode: 'close'
-            });
-
-            // 높이의 변화가 어색하지 않도록 애니메이션 추가
-            Animated.spring(this.state.boxHeight, {
-                tension : 160,
-                friction: 5,
-                toValue: this.props.boxHeight
-            }).start();
+            this._changeCloseButtonMode('close');
+            this._updateBoxHeight(); 
         });
     }
     
@@ -78,51 +55,88 @@ export class PopupView extends ViewObject {
         this.keyboardDidShowListener.remove()
         this.keyboardDidHideListener.remove()
     }
+
+    _changeCloseButtonMode(mode = 'close') {
+        this.setState({
+            closeButtonMode: mode
+        });
+    }
+
+    _updateBoxHeight(e) {
+        let {width, height} = Dimensions.get('window');
+        let keyboardSpace = 0;
+        if (e && e !== null) {
+            keyboardSpace = e.endCoordinates.height;
+        }
+        let screenHeight = height - keyboardSpace;
+        let boxHeight = this.props.boxHeight; 
+        if (boxHeight > screenHeight) {
+            boxHeight = screenHeight;
+        } 
+        this.setState({boxHeight: boxHeight});
+    }
    
     open() {
         this.active();
+        
         Animated.parallel([
-            Animated.timing(this.state.animateTooltipTextOpacity, {
-                delay: 230,
-                duration: 250,
-                toValue: 1
-            }),
-            Animated.timing(this.state.animateTooltipTextXy, {
-                delay: 230,
-                duration: 250,
-                easing: Easing.out(Easing.quad),
-                toValue: {x: 0, y: 0}
-            }),
-            Animated.timing(this.state.animateBgOpacity, {
-                duration: 250,
-                toValue: 1
-            }),
-            Animated.timing(this.state.animateBoxXy, {
-                duration: 350,
-                easing: Easing.out(Easing.quad),
-                toValue: {x: 0, y: 0}
-            })
+            Animated.timing(
+                this.state.animateTooltipTextOpacity, {
+                    delay: 230,
+                    duration: 250,
+                    toValue: 1
+                }
+            ),
+            Animated.timing(
+                this.state.animateTooltipTextXy, {
+                    delay: 230,
+                    duration: 250,
+                    easing: Easing.out(Easing.quad),
+                    toValue: {x: 0, y: 0}
+                }
+            ),
+            Animated.timing(
+                this.state.animateBgOpacity, {
+                    duration: 250,
+                    toValue: 1
+                }
+            ),
+            Animated.timing(
+                this.state.animateBoxXy, {
+                    duration: 250,
+                    
+                    toValue: {x: 0, y: 0}
+                }
+            )
         ]).start();
     }
     
     close() {
         Animated.parallel([
-            Animated.timing(this.state.animateTooltipTextOpacity, {
-                duration: 250,
-                toValue: 0
-            }),
-            Animated.timing(this.state.animateTooltipTextXy, {
-                duration: 250,
-                toValue: {x: 0, y: 15}
-            }),
-            Animated.timing(this.state.animateBgOpacity, {
-                duration: 250,
-                toValue: 0
-            }),
-            Animated.timing(this.state.animateBoxXy, {
-                duration: 250,
-                toValue: {x: 0, y: 300}
-            })
+            Animated.timing(
+                this.state.animateTooltipTextOpacity, {
+                    duration: 250,
+                    toValue: 0
+                }
+            ),
+            Animated.timing(
+                this.state.animateTooltipTextXy, {
+                    duration: 250,
+                    toValue: {x: 0, y: 15}
+                }
+            ),
+            Animated.timing(
+                this.state.animateBgOpacity, {
+                    duration: 250,
+                    toValue: 0
+                }
+            ),
+            Animated.timing(
+                this.state.animateBoxXy, {
+                    duration: 250,
+                    toValue: {x: 0, y: 300}
+                }
+            )
         ]).start( () => {
             this.inactive();
         });

@@ -6,8 +6,8 @@ import {
     TouchableHighlight 
 } from 'react-native';
 import {commStyles} from '../styles';
-import {ViewObject} from '../view-object/view-object';
-import {Icon} from '../icon/icon';
+import ViewObject from '../view-object/view-object';
+import Icon from '../icon/icon';
 import {ToggleView} from '../toggle-view/toggle-view';
 
 export class Button extends ViewObject {

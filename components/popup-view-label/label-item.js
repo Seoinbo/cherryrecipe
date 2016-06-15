@@ -7,15 +7,13 @@ import {
 } from 'react-native';
 import {Util} from '../../services/util';
 import {commStyles} from '../styles';
-import {ViewObject} from '../view-object/view-object';
+import ViewObject from '../view-object/view-object';
 import {Button} from '../button/button';
-import {LabelStorage} from '../../storages/label-storage';
 
 export class LabelItem extends ViewObject {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.props = props;
-        this.labelStorage = null;
     }
     
     render() {

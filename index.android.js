@@ -10,11 +10,6 @@ import reducerPackage from './reducers';
 // Constants of redux.
 const store = createStore(reducerPackage);
 
-store.subscribe( () => {
-    console.log("store: ", store.getState());
-})
-
-
 class Cherryrecipe extends Component {
     render () {
         return (

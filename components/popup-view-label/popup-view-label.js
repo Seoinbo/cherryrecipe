@@ -9,7 +9,7 @@ import {
     RecyclerViewBackedScrollView
 } from 'react-native';
 import {commStyles} from '../styles';
-import {ViewObject} from '../view-object/view-object';
+import ViewObject from '../view-object/view-object';
 import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
 import {LabelItem} from './label-item.js';
@@ -17,11 +17,9 @@ import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
 import {UserStorage} from '../../storages/user-storage';
 import {LabelStorage} from '../../storages/label-storage';
 
-import {connect} from 'react-redux';
-
 export default class PopupViewLabel extends ViewObject {
-    constructor() {
-        super();
+    constructor(props, context) {
+        super(props, context);
         // LocalStorage via users.
         this.userStorage = new UserStorage();
         
@@ -32,6 +30,13 @@ export default class PopupViewLabel extends ViewObject {
         var labelSource = new ListView.DataSource({rowHasChanged: this._labelDataChange}); 
         this.state = Object.assign({}, this.state, {
             arrLabelData: labelSource.cloneWithRows(this._getLabelData())
+        });
+    }
+
+    componentDidMount() {
+        // labelStorage의 데이터가 변경되면 화면도 갱신.
+        this.labelStorage.realm.addListener('change', () => {
+            this._updateRow();
         });
     }
     
@@ -55,7 +60,6 @@ export default class PopupViewLabel extends ViewObject {
             <LabelItem 
                 source={data}
                 onRemove={()=>{this._removeLabel(data.id)}}
-                onFocus={()=>{console.log("aaaaaa")}}
                 {...{dispatch, keyboardState}}
             />
         )
@@ -71,7 +75,8 @@ export default class PopupViewLabel extends ViewObject {
     render() {
         let {dispatch, keyboardState} = this.props;
         return (
-            <PopupView ref="popupView" 
+            <PopupView 
+                ref="popupView" 
                 style={[styles.popupView, this.props.style]}
                 headerButtons={{icon: 'add', callback: ()=>{this._addLabel()}}}
                 boxHeight={350}
@@ -79,8 +84,9 @@ export default class PopupViewLabel extends ViewObject {
                 tooltip={"라벨을 선택해주세요"}
                 {...{dispatch, keyboardState}}>
                 <ListView
-                    keyboardShouldPersistTaps={true} 
+                    keyboardShouldPersistTaps={true}
                     enableEmptySections={true}
+                    removeClippedSubviews={false}
                     dataSource={this.state.arrLabelData}
                     renderRow={(rowData, sectionID, rowID, highlightRow) => {
                         return this._renderRow(rowData)}
@@ -106,17 +112,10 @@ export default class PopupViewLabel extends ViewObject {
         this.labelStorage.add({
             owner: this.userStorage.userid
         });
-        
-        setTimeout( () => {
-            this._updateRow();
-        }, 100);
     }
     
     _removeLabel(labelID) {
         this.labelStorage.delete(labelID);
-        setTimeout( () => {
-            this._updateRow();
-        }, 100);
     }
 }
 
@@ -124,11 +123,3 @@ const styles = StyleSheet.create({
     popupView: {
     },
 });
-
-function mapStateToProps(state) {
-    return {
-        keyboardState: state.keyboardState
-    }
-}
-
-// export default connect(mapStateToProps)(PopupViewLabel);

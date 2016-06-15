@@ -5,7 +5,7 @@ import {
     Image
 } from 'react-native';
 
-export class Icon extends Component {
+class Icon extends Component {
     render() {
         let path;
         switch (this.props.name) {
@@ -52,3 +52,5 @@ export class Icon extends Component {
 
 const styles = {
 }
+
+export default Icon;

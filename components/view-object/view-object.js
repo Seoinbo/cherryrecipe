@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {EventEmitter} from '../../services/event-emitter';
 
 export class ViewObject extends Component {
-    constructor() {
-        super();
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             activation: false,
             visibility: false,
