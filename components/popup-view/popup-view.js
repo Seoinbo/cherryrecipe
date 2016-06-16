@@ -16,8 +16,10 @@ import {Layout} from '../../services/layout';
 import {hideKeyboard} from '../../services/keyboard';
 
 export class PopupView extends ViewObject {
+    
     constructor(props, context) {
         super(props, context);
+        
         this.state = Object.assign({}, this.state, {
             closeButtonMode: 'hide', // 'hide'|'ok',
             boxHeight: new Animated.Value(props.boxHeight),

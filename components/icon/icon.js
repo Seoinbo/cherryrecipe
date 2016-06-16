@@ -6,6 +6,10 @@ import {
 } from 'react-native';
 
 class Icon extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         let path;
         switch (this.props.name) {

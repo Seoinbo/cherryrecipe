@@ -11,6 +11,11 @@ import Icon from '../icon/icon';
 import {ToggleView} from '../toggle-view/toggle-view';
 
 export class Button extends ViewObject {
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         var touchableProps = {};
         if (!this.props.disabled) {

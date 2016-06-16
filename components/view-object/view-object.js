@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {EventEmitter} from '../../services/event-emitter';
 
-export class ViewObject extends Component {
+class ViewObject extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -67,3 +67,5 @@ export class ViewObject extends Component {
         }
     }
 }
+
+export default ViewObject;
