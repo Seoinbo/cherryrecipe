@@ -20,8 +20,19 @@ class Checkbox extends ViewObject {
         super(props, context);
 
         this.state = Object.assign({}, this.state, {
-            animateIconScale: new Animated.Value(0)
+            animateIconScale: new Animated.Value(0.001)
         });
+
+        this._responder = {
+            onStartShouldSetResponder: (e) => true,
+            onResponderGrant: () => {this._highlight()},
+            onResponderRelease: () => {this._handleResponderEnd()}
+        };
+
+        this.checked = false;
+        if (this.props.checked) {
+            this.checked = true;
+        }
     }
 
     render() {
@@ -32,12 +43,50 @@ class Checkbox extends ViewObject {
         } = this.props;
 
         return (
-            <View style={[this.props.style, styles.checkbox]}>
+            <View style={[this.props.style, styles.checkbox]} {...this._responder}>
                 <View style={styles.box}>
-                    <Animated.Icon style={[styles.icon, {transform: this.state.animateIconScale.getTranslateTransform()}]} name="done" iconWidth={20} iconHeight={20} />
+                    <Animated.View style={{
+                        transform: [
+                            {scale: this.state.animateIconScale}
+                        ]
+                    }}>
+                        <Icon style={[styles.icon]} name="done" iconWidth={20} iconHeight={20} />
+                    </Animated.View>
                 </View>
             </View>
         )
+    }
+
+    toggle() {
+        let scaleRatio;
+
+        if (this.checked) {
+            this.checked = false;
+            scaleRatio = 0;
+        } else {
+            this.checked = true;
+            scaleRatio = 1;
+        }
+
+        Animated.timing(
+            this.state.animateIconScale,
+            {
+                toValue: scaleRatio,
+                duration: 150
+            }
+        ).start();
+    }
+
+    _highlight() {
+        this.toggle();
+    }
+ 
+    _handleResponderEnd() {
+        let { checked, disabled } = this.props;
+ 
+        if (!disabled) {
+            this.props.onCheck && this.props.onCheck(!checked, this.props.value);
+        }
     }
 }
 
