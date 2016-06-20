@@ -19,8 +19,19 @@ class Checkbox extends ViewObject {
     constructor(props, context) {
         super(props, context);
 
+        let defaultScale = 0.001;
+        let defaultOpacity = 0; 
+
+        this.checked = false;
+        if (this.props.checked) {
+            this.checked = true;
+            defaultScale = 1;
+            defaultOpacity = 1;
+        }
+
         this.state = Object.assign({}, this.state, {
-            animateIconScale: new Animated.Value(0.001)
+            animateIconScale: new Animated.Value(defaultScale),
+            animateIconOpacity: new Animated.Value(defaultOpacity)
         });
 
         this._responder = {
@@ -28,11 +39,6 @@ class Checkbox extends ViewObject {
             onResponderGrant: () => {this._highlight()},
             onResponderRelease: () => {this._handleResponderEnd()}
         };
-
-        this.checked = false;
-        if (this.props.checked) {
-            this.checked = true;
-        }
     }
 
     render() {
@@ -48,7 +54,8 @@ class Checkbox extends ViewObject {
                     <Animated.View style={{
                         transform: [
                             {scale: this.state.animateIconScale}
-                        ]
+                        ],
+                        opacity: this.state.animateIconOpacity
                     }}>
                         <Icon style={[styles.icon]} name="done" iconWidth={20} iconHeight={20} />
                     </Animated.View>
@@ -63,16 +70,23 @@ class Checkbox extends ViewObject {
         if (this.checked) {
             this.checked = false;
             scaleRatio = 0;
+            opacityRatio = .1;
         } else {
             this.checked = true;
             scaleRatio = 1;
+            opacityRatio = 1;
         }
 
         Animated.timing(
-            this.state.animateIconScale,
-            {
+            this.state.animateIconScale, {
                 toValue: scaleRatio,
                 duration: 150
+            }
+        ).start();
+        Animated.timing(
+            this.state.animateIconOpacity, {
+                toValue: opacityRatio,
+                duration: 100
             }
         ).start();
     }
@@ -95,8 +109,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 45,
-        height: 45
+        width: 40,
+        height: 40
     },
     box: {
         flexDirection: 'row',

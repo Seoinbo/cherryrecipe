@@ -55,12 +55,12 @@ export default class PopupViewLabel extends ViewObject {
     }
     
     _renderRow(data) {
-        let {dispatch, keyboardState} = this.props;
+        let {dispatch, selectMode} = this.props;
         return (
             <LabelItem 
                 source={data}
                 onRemove={()=>{this._removeLabel(data.id)}}
-                {...{dispatch, keyboardState}}
+                {...{dispatch, selectMode}}
             />
         )
     }

@@ -18,18 +18,27 @@ export class LabelItem extends ViewObject {
     }
     
     render() {
-        let labelID = this.props.source.id;
+        let {source, selectMode} = this.props;
+
+        let checkbox;
+        if (selectMode) {
+            checkbox = <Checkbox  style={styles.checkbox} />;
+        } else {
+            checkbox = <View/>;
+        }
+
         return (
             <View style={[this.props.style, styles.labelItem]}>
                 <Button style={styles.move} icon="dehaze" rendering={this.state.editing}/>
                 <View style={styles.itemWrapper}>
-                    <Checkbox  style={styles.checkbox}/>
+                    {checkbox}
                     <TextInput style={styles.labelName} 
                         underlineColorAndroid="transparent"
-                        placeholder="input your label name"
+                        placeholder="Input your label name"
+                        returnKeyType="next"
                         onFocus={() => {this._onLabelNameFocus()}}
                         onBlur={() => {this._onLabelNameBlur()}}>
-                        {this.props.source.id}
+                        {source.name}
                     </TextInput>
                     <Button style={styles.remove} icon="clear" visible={this.state.editing} onPress={this.props.onRemove}/>
                 </View>
@@ -62,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 35
+        marginLeft: 40
     },
     checkbox: {
     },
