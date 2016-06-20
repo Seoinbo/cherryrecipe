@@ -19,7 +19,7 @@ export class ToggleView extends Component {
         if (rendering) {
             if (visible) {
                 return (
-                    <View style={this.props.style}>{React.Children.map(this.props.children, React.cloneElement)}</View>
+                    <View style={this.props.style}>{this.props.children}</View>
                 )
             } else {
                 let s = {};

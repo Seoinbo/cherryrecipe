@@ -15,7 +15,7 @@ export class LocalStorage {
     }
 }
 
-LocalStorage.schemaVersion = 0;
+LocalStorage.schemaVersion = 1;
 
 LocalStorage.realm = null;
 
@@ -30,6 +30,7 @@ LocalStorage.schema = [
     },
     {
         name: 'Label',
+        primaryKey: 'id',
         properties: {
             id: 'string',
             index: {type: 'int', default: 0, optional: true},

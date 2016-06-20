@@ -4,6 +4,7 @@ import {
     Text,
     TextInput,
     View,
+    Keyboard
 } from 'react-native';
 import {Util} from '../../services/util';
 import {commStyles} from '../styles';
@@ -15,10 +16,29 @@ export class LabelItem extends ViewObject {
     constructor(props, context) {
         super(props, context);
         this.props = props;
+
+        this._listeners = [];
+    }
+
+    componentDidMount() {
+        // 데이터 저장 이벤트
+        // let k = Keyboard.addListener('', (e) => {
+        //     console.log(e);
+        // });
+    }
+
+    componentWillUnmount() {
+        // this._listeners.forEach(function(listener) {
+        //     listener.remove();
+        // });
     }
     
     render() {
-        let {source, selectMode} = this.props;
+        let {
+            source,
+            selectMode,
+            onUpdate
+        } = this.props;
 
         let checkbox;
         if (selectMode) {
@@ -35,7 +55,8 @@ export class LabelItem extends ViewObject {
                     <TextInput style={styles.labelName} 
                         underlineColorAndroid="transparent"
                         placeholder="Input your label name"
-                        returnKeyType="next"
+                        returnKeyType="done"
+                        onChangeText={onUpdate}
                         onFocus={() => {this._onLabelNameFocus()}}
                         onBlur={() => {this._onLabelNameBlur()}}>
                         {source.name}
@@ -45,7 +66,7 @@ export class LabelItem extends ViewObject {
             </View>
         )
     }
-    
+
     _onLabelNameFocus() {
         this.enterEditMode();
     }

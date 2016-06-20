@@ -9,6 +9,7 @@ import {
     RecyclerViewBackedScrollView
 } from 'react-native';
 import {commStyles} from '../styles';
+import {Util} from '../../services/util';
 import ViewObject from '../view-object/view-object';
 import {Button} from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
@@ -60,9 +61,15 @@ export default class PopupViewLabel extends ViewObject {
             <LabelItem 
                 source={data}
                 onRemove={()=>{this._removeLabel(data.id)}}
+                onUpdate={(newText) => {this._onUpdateText(data, newText)}}
                 {...{dispatch, selectMode}}
             />
         )
+    }
+
+    _onUpdateText(data, text) {
+        // 라벨 네임 변경 시 local-storage에 저장.
+        this.labelStorage.update(data.id, {name: text});
     }
 
     componentWillReceiveProps(next) {

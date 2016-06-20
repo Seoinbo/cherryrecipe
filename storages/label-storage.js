@@ -41,6 +41,16 @@ export class LabelStorage extends LocalStorage {
         return userid + '-l' + Util.uniqID();
     }
     
+    update(id, data) {
+        let temp = Object.assign({
+            id: id,
+            updated: Util.toUnixTimestamp(Util.now())
+        }, data); 
+        this.realm.write( () => {
+            this.realm.create(this.name, temp, true);
+        });
+    }
+
     get name() {
         return 'Label';
     }

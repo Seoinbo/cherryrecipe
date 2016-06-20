@@ -5,9 +5,9 @@ import {
     Easing,
     Text,
     View,
-    DeviceEventEmitter,
     Dimensions,
-    LayoutAnimation
+    LayoutAnimation,
+    Keyboard
 } from 'react-native';
 import ViewObject from '../view-object/view-object';
 import {Button} from '../button/button';
@@ -42,7 +42,7 @@ export class PopupView extends ViewObject {
 
     
     componentDidMount() {
-        this.keyboardDidShowListener = DeviceEventEmitter.addListener('keyboardDidShow', (event) => {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
             // 키보드의 상태에 따라 팝업 닫기 버튼 모드를 다르게 한다.
             this.setState({
                 closeButtonMode: 'ok'
@@ -62,7 +62,7 @@ export class PopupView extends ViewObject {
             }).start();
         });
 
-        this.keyboardDidHideListener = DeviceEventEmitter.addListener('keyboardDidHide', (event) => {
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', (event) => {
             this.setState({
                 closeButtonMode: 'close'
             });
@@ -179,7 +179,7 @@ export class PopupView extends ViewObject {
                             </View>
                         </View>
                         <View style={styles.body}>
-                            {React.Children.map(this.props.children, React.cloneElement)}
+                            {this.props.children}
                         </View>
                     </Animated.View>
                 </View>
