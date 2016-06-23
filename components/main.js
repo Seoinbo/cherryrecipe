@@ -13,6 +13,8 @@ import Realm from 'realm';
 
 // Components
 import {Nav} from './nav/nav';
+import Toolbar from './toolbar/toolbar';
+import {Button} from './button/button';
 import Icon from './icon/icon';
 import PopupViewLabel from './popup-view-label/popup-view-label';
 import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
@@ -64,16 +66,32 @@ export default class Main extends Component {
                                 </View>
                             </TouchableHighlight>
                         </Nav>
+                        <View style={styles.list}>
+                        <Text>adfafdas</Text>
+                        </View>
+                        <Toolbar>
+                            <Button style={styles.addRecipeButton} icon="add">새 레시피</Button>
+                            <View style={styles.toolbarButtonGroup}>
+                                <Button icon="public"/>
+                                <Button icon="shopping_cart"/>
+                                <Button icon="search"/>
+                            </View>
+                        </Toolbar>
                     </View>
                     <PopupViewLabel
                         ref="popupViewLabel"
                         isVisible={false}
+                        onSelect={(source) => this._onSelectLabel(source)}
                         {...{dispatch, keyboardState}}>
                     </PopupViewLabel>
                 </View>
                 {keyboardSpacer}
             </View>
         );
+    }
+
+    _onSelectLabel(source) {
+        alert("select label \"" + source.name + "\"");
     }
     
     _labelListOpen() {
@@ -116,5 +134,21 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0
         
+    },
+    list: {
+        flex: 1,
+        flexDirection: 'column',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: "red"
+    },
+    addRecipeButton: {
+        width: 130
+    },
+    toolbarButtonGroup: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 });

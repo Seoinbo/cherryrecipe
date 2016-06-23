@@ -77,8 +77,8 @@ export class PopupView extends ViewObject {
     }
     
     componentWillUnmount () {
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
     }
    
     open() {

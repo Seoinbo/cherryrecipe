@@ -37,6 +37,18 @@ class Icon extends Component {
         case 'done':
             path = require("../../images/icons/ic_done.png");
             break;
+        case 'mode_edit':
+            path = require("../../images/icons/ic_mode_edit.png");
+            break;
+        case 'public':
+            path = require("../../images/icons/ic_public.png");
+            break;
+        case 'search':
+            path = require("../../images/icons/ic_search.png");
+            break;
+	    case 'shopping_cart':
+            path = require("../../images/icons/ic_shopping_cart.png");
+            break;
         }
         
         let imgSize = {};

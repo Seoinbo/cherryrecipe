@@ -6,7 +6,8 @@ import {
     View,
     ListView,
     TouchableHighlight,
-    RecyclerViewBackedScrollView
+    RecyclerViewBackedScrollView,
+    Keyboard
 } from 'react-native';
 import {commStyles} from '../styles';
 import {Util} from '../../services/util';
@@ -21,6 +22,7 @@ import {LabelStorage} from '../../storages/label-storage';
 export default class PopupViewLabel extends ViewObject {
     constructor(props, context) {
         super(props, context);
+
         // LocalStorage via users.
         this.userStorage = new UserStorage();
         
@@ -40,6 +42,10 @@ export default class PopupViewLabel extends ViewObject {
             this._updateRow();
         });
     }
+
+    componentWillUnmount () {
+
+    }
     
     _getLabelData() {
         let data;
@@ -56,13 +62,13 @@ export default class PopupViewLabel extends ViewObject {
     }
     
     _renderRow(data) {
-        let {dispatch, selectMode} = this.props;
+        let {dispatch, checkMode, onSelect} = this.props;
         return (
             <LabelItem 
                 source={data}
                 onRemove={()=>{this._removeLabel(data.id)}}
                 onUpdate={(newText) => {this._onUpdateText(data, newText)}}
-                {...{dispatch, selectMode}}
+                {...{dispatch, checkMode, onSelect}}
             />
         )
     }
@@ -114,7 +120,7 @@ export default class PopupViewLabel extends ViewObject {
     toggle() {
         this.refs.popupView.toggle();
     }
-    
+
     _addLabel() {
         this.labelStorage.add({
             owner: this.userStorage.userid

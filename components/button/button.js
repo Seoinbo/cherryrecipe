@@ -30,7 +30,7 @@ export class Button extends ViewObject {
                 <TouchableHighlight {...touchableProps} underlayColor="paleturquoise">
                     <View style={styles.box}>
                         <Icon name={this.props.icon}/>
-                        <Text>{this.props.children}</Text>
+                        <Text style={styles.text}>{this.props.children}</Text>
                     </View>
                 </TouchableHighlight>
             </ToggleView>
@@ -44,11 +44,14 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: 45,
-        height: 45,
-        // backgroundColor: '#b0e0e6'
+        height: 45
     },
     box: {
         flexWrap: 'nowrap',
         flexDirection: 'row'
+    },
+    text: {
+        marginLeft: 3,
+        paddingRight: 5
     }
 });
