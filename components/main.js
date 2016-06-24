@@ -14,6 +14,7 @@ import Realm from 'realm';
 // Components
 import {Nav} from './nav/nav';
 import Toolbar from './toolbar/toolbar';
+import PreviewCard from './preview-card/preview-card';
 import {Button} from './button/button';
 import Icon from './icon/icon';
 import PopupViewLabel from './popup-view-label/popup-view-label';
@@ -57,7 +58,7 @@ export default class Main extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.wrapper}>
-                    <View>
+                    <View style={styles.content}>
                         <Nav style={styles.nav} childType="object">
                             <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
                                 <View style={styles.innerNav}>
@@ -67,9 +68,10 @@ export default class Main extends Component {
                             </TouchableHighlight>
                         </Nav>
                         <View style={styles.list}>
-                        <Text>adfafdas</Text>
+                            <PreviewCard />
+                            <PreviewCard />
                         </View>
-                        <Toolbar>
+                        <Toolbar style={styles.toolbar}>
                             <Button style={styles.addRecipeButton} icon="add">새 레시피</Button>
                             <View style={styles.toolbarButtonGroup}>
                                 <Button icon="public"/>
@@ -103,9 +105,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#e5e5e5',
+        backgroundColor: '#ffffff'
     },
     wrapper: {
+        flex: 1
+    },
+    content: {
         flex: 1
     },
     keyboardSpace: {
@@ -117,6 +122,8 @@ const styles = StyleSheet.create({
     },
     nav: {
         height: 50,
+        borderColor: '#e1e1e1',
+        borderBottomWidth: 1
     },
     innerNav: {
         alignItems: 'center'
@@ -137,12 +144,11 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
-        flexDirection: 'column',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: "red"
+        backgroundColor: '#eeeeee'
+    },
+    toolbar: {
+        borderColor: '#e1e1e1',
+        borderTopWidth: 1
     },
     addRecipeButton: {
         width: 130
