@@ -1,7 +1,7 @@
 import LocalStorage from './local-storage';
 import {Util} from '../services/util';
 
-export class LabelStorage extends LocalStorage {
+class RecipeStorage extends LocalStorage {
     constructor() {
         super();
     }
@@ -16,13 +16,15 @@ export class LabelStorage extends LocalStorage {
         }, data);
         super.add(newData);
     }
-        
+    
     createID(userid) {
-        return userid + '-L' + Util.uniqID();
+        return userid + '-R' + Util.uniqID();
     }
-
+    
     // @override
     get name() {
-        return 'Label';
+        return 'Recipe';
     }
 }
+
+export default RecipeStorage;

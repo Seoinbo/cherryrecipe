@@ -11,6 +11,7 @@ class PreviewCard extends Component {
         return (
             <View style={[styles.previewCard, this.props.style]}>
                 <Text style={styles.title}>Text preview card</Text>
+                <Text style={styles.desc}>{this.props.source.id}</Text>
             </View>
         )
     }
@@ -30,6 +31,10 @@ const styles = StyleSheet.create({
         marginTop: 15,
         textAlign: "center",
         fontSize: 21
+    },
+    desc: {
+        marginTop: 15,
+        textAlign: "center"
     }
 });
 

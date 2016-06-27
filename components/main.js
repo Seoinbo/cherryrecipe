@@ -4,10 +4,9 @@ import {
     StyleSheet,
     Text,
     View,
-    TextInput,
-    ScrollView,
     TouchableHighlight,
-    Platform
+    Platform,
+    ListView
 } from 'react-native';
 import Realm from 'realm';
 
@@ -22,6 +21,7 @@ import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
 
 // Storages
 import {UserStorage} from '../storages/user-storage';
+import RecipeStorage from '../storages/recipe-storage';
 
 import {keyboardWillShow} from '../actions/device';
 
@@ -34,16 +34,56 @@ export default class Main extends Component {
         super();
         
         // Set userid.
-        this.user = new UserStorage();
-        this.user.realm.write(() => {
-            this.user.realm.create('User', {
+        this.userStorage = new UserStorage();
+        this.userStorage.realm.write(() => {
+            this.userStorage.realm.create('User', {
                 id: 'g1625346125341653'
             }, true);
         });
 
+        // LocalStorage via recipes.
+        this.recipeStorage = new RecipeStorage();
+
+        // Load recipe data.        
+        var recipeSource = new ListView.DataSource({rowHasChanged: this._recipeDataChange});
         this.state = Object.assign({}, this.state, {
-            currentLabelName: "All labels"
+            currentLabelName: "All labels",
+            arrRecipeData: recipeSource.cloneWithRows(this._getRecipeData())
         });
+    }
+
+    componentDidMount() {
+        // recipeStorage의 데이터가 변경되면 화면도 갱신.
+        this.recipeStorage.realm.addListener('change', () => {
+            this._updateRow();
+        });
+    }
+
+    _updateRow() {
+        this.setState({arrRecipeData: this.state.arrRecipeData.cloneWithRows(this._getRecipeData())});
+    }
+
+    _getRecipeData() {
+        let data;
+        try {
+            data = this.recipeStorage.realm.objects('Recipe');
+        } catch (e) {
+            data = [];
+        }
+        return data;
+    }
+
+    _recipeDataChange(r1, r2) {
+        return r1 !== r2;
+    }
+
+    _renderRow(data) {
+        return (
+            <PreviewCard
+                key={data.id} 
+                source={data}
+            />
+        )
     }
    
     render() {
@@ -51,7 +91,7 @@ export default class Main extends Component {
         let expendIconName = actives.labelExpend ? 'expand_less' : 'expand_more';
 
         let keyboardSpacer;
-        if (Platform.OS != 'android') {
+        if (Platform.OS != 'android') { 
             keyboardSpacer = <KeyboardSpacer/>
         }
 
@@ -60,19 +100,23 @@ export default class Main extends Component {
                 <View style={styles.wrapper}>
                     <View style={styles.content}>
                         <Nav style={styles.nav} childType="object">
-                            <TouchableHighlight underlayColor="paleturquoise" onPress={() => {this._labelListOpen()}}>
+                            <TouchableHighlight underlayColor="transparent" onPress={() => {this._labelListOpen()}}>
                                 <View style={styles.innerNav}>
                                     <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
                                     <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
                                 </View>
                             </TouchableHighlight>
                         </Nav>
-                        <View style={styles.list}>
-                            <PreviewCard />
-                            <PreviewCard />
-                        </View>
+                        <ListView 
+                            style={styles.list}
+                            enableEmptySections={true}
+                            dataSource={this.state.arrRecipeData}
+                            renderRow={(rowData, sectionID, rowID, highlightRow) => {
+                                return this._renderRow(rowData)}
+                            }>
+                        </ListView>
                         <Toolbar style={styles.toolbar}>
-                            <Button style={styles.addRecipeButton} icon="add">새 레시피</Button>
+                            <Button style={styles.addRecipeButton} icon="add" onPress={()=>this._addRecipe()}>새 레시피</Button>
                             <View style={styles.toolbarButtonGroup}>
                                 <Button icon="public"/>
                                 <Button icon="shopping_cart"/>
@@ -90,6 +134,12 @@ export default class Main extends Component {
                 {keyboardSpacer}
             </View>
         );
+    }
+
+    _addRecipe() {
+        this.recipeStorage.add({
+            owner: this.userStorage.userid
+        });
     }
 
     _onSelectLabel(source) {
@@ -140,7 +190,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0
-        
     },
     list: {
         flex: 1,
