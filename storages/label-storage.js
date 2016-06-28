@@ -1,7 +1,7 @@
 import LocalStorage from './local-storage';
 import {Util} from '../services/util';
 
-export class LabelStorage extends LocalStorage {
+class LabelStorage extends LocalStorage {
     constructor() {
         super();
     }
@@ -26,3 +26,5 @@ export class LabelStorage extends LocalStorage {
         return 'Label';
     }
 }
+
+export default LabelStorage;

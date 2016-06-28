@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Main from '../components/main';
+import Router from './router';
 
 class MainContainer extends Component {
     render() {
         return (
-            <Main {...this.props} />
+            <Router {...this.props} />
         )
     }
 }

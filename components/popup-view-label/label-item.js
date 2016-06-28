@@ -10,7 +10,7 @@ import {
 import {Util} from '../../services/util';
 import {commStyles} from '../styles';
 import ViewObject from '../view-object/view-object';
-import {Button} from '../button/button';
+import Button from '../button/button';
 import Checkbox from '../checkbox/checkbox';
 
 export class LabelItem extends ViewObject {

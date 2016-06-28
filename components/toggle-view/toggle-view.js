@@ -4,6 +4,8 @@ import {
     View
 } from 'react-native';
 
+
+// 해당 컴포넌트 노출 여부를 on/off.
 export class ToggleView extends Component {
     render() {
         var rendering = true;

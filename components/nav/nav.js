@@ -6,9 +6,9 @@ import {
     Navigator,
     TouchableHighlight
 } from 'react-native';
-import {Button} from '../button/button';
+import Button from '../button/button';
 
-export class Nav extends Component {
+class Nav extends Component {
 
     render() {
         let subjectBox;
@@ -33,15 +33,17 @@ export class Nav extends Component {
 }
 
 const styles = StyleSheet.create({
-  nav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  subject: {
-      fontSize: 18
-  },
-  subjectbox: {
-      
-  }
+    nav: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    subject: {
+        fontSize: 18
+    },
+    subjectbox: {
+
+    }
 });
+
+export default Nav;

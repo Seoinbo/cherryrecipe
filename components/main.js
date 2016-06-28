@@ -11,16 +11,16 @@ import {
 import Realm from 'realm';
 
 // Components
-import {Nav} from './nav/nav';
+import Nav from './nav/nav';
 import Toolbar from './toolbar/toolbar';
 import PreviewCard from './preview-card/preview-card';
-import {Button} from './button/button';
+import Button from './button/button';
 import Icon from './icon/icon';
 import PopupViewLabel from './popup-view-label/popup-view-label';
 import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
 
 // Storages
-import {UserStorage} from '../storages/user-storage';
+import UserStorage from '../storages/user-storage';
 import RecipeStorage from '../storages/recipe-storage';
 
 import {keyboardWillShow} from '../actions/device';
@@ -137,9 +137,15 @@ export default class Main extends Component {
     }
 
     _addRecipe() {
-        this.recipeStorage.add({
-            owner: this.userStorage.userid
-        });
+
+        this.props.navigator.push({
+            name: 'detail',
+            index: 2
+          });
+
+        // this.recipeStorage.add({
+        //     owner: this.userStorage.userid
+        // });
     }
 
     _onSelectLabel(source) {

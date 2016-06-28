@@ -10,7 +10,7 @@ import ViewObject from '../view-object/view-object';
 import Icon from '../icon/icon';
 import {ToggleView} from '../toggle-view/toggle-view';
 
-export class Button extends ViewObject {
+class Button extends ViewObject {
 
     constructor(props, context) {
         super(props, context);
@@ -55,3 +55,5 @@ export const styles = StyleSheet.create({
         paddingRight: 5
     }
 });
+
+export default Button;

@@ -12,12 +12,12 @@ import {
 import {commStyles} from '../styles';
 import {Util} from '../../services/util';
 import ViewObject from '../view-object/view-object';
-import {Button} from '../button/button';
+import Button from '../button/button';
 import {PopupView} from '../popup-view/popup-view';
 import {LabelItem} from './label-item.js';
 import {KeyboardAwareListView} from 'react-native-keyboard-aware-scroll-view';
-import {UserStorage} from '../../storages/user-storage';
-import {LabelStorage} from '../../storages/label-storage';
+import UserStorage from '../../storages/user-storage';
+import LabelStorage from '../../storages/label-storage';
 
 export default class PopupViewLabel extends ViewObject {
     constructor(props, context) {

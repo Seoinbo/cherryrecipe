@@ -7,10 +7,11 @@ import {
     View,
     Dimensions,
     LayoutAnimation,
-    Keyboard
+    Keyboard,
+    BackAndroid
 } from 'react-native';
 import ViewObject from '../view-object/view-object';
-import {Button} from '../button/button';
+import Button from '../button/button';
 import {Overlay} from '../overlay/overlay';
 import {Layout} from '../../services/layout';
 import {hideKeyboard} from '../../services/keyboard';
@@ -28,6 +29,9 @@ export class PopupView extends ViewObject {
             animateBgOpacity: new Animated.Value(0), 
             animateBoxXy: new Animated.ValueXY({x: 0, y: 300})
         });
+
+        // bind this
+        this._onBackAndroid = this._onBackAndroid.bind(this);
     }
     
     // shouldComponentUpdate(nextProps, nextState) {
@@ -64,7 +68,7 @@ export class PopupView extends ViewObject {
 
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', (event) => {
             this.setState({
-                closeButtonMode: 'close'
+                closeButtonMode: 'hide'
             });
 
             // 높이의 변화가 어색하지 않도록 애니메이션 추가
@@ -74,13 +78,27 @@ export class PopupView extends ViewObject {
                 toValue: this.props.boxHeight
             }).start();
         });
+
+        // 뒤로가기 시스템 버튼 눌렀을 때 창 닫기
+        BackAndroid.addEventListener('hardwareBackPress', this._onBackAndroid);
     }
     
+    _onBackAndroid() {
+        if (this.state.activation && this.state.closeButtonMode == 'hide') {
+            this.close();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     componentWillUnmount () {
         this.keyboardDidShowListener.remove();
         this.keyboardDidHideListener.remove();
+
+        BackAndroid.removeEventListener('hardwareBackPress', this._onBackAndroid);
     }
-   
+
     open() {
         this.active();
         Animated.parallel([
