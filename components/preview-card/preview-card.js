@@ -2,17 +2,38 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    TouchableHighlight
 } from 'react-native';
 
-class PreviewCard extends Component {
+import ViewObject from '../view-object/view-object';
+import Button from '../button/button';
 
+class PreviewCard extends ViewObject {
+
+    constructor(props, context) {
+        super(props, context);
+
+        // bind events.
+        this.openDetail = this.openDetail.bind(this);
+    }
+
+    openDetail() {
+        this.props.rnavigator.push({
+            name: 'detail',
+            index: 2,
+            recipeID: this.props.source.id
+        });
+    }
+    
     render() {
         return (
-            <View style={[styles.previewCard, this.props.style]}>
-                <Text style={styles.title}>Text preview card</Text>
-                <Text style={styles.desc}>{this.props.source.id}</Text>
-            </View>
+            <TouchableHighlight onPress={this.openDetail} underlayColor="transparent">
+                <View style={[styles.previewCard, this.props.style]}>
+                    <Text style={styles.title}>Text preview card</Text>
+                    <Text style={styles.desc}>{this.props.source.id}</Text>
+                </View>
+            </TouchableHighlight>
         )
     }
 }

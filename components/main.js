@@ -30,14 +30,16 @@ const actives = {
 };
 
 export default class Main extends Component {
-    constructor() {
-        super();
-        
+    constructor(props, context) {
+        super(props, context);
+        this.props = props;
+
         // Set userid.
         this.userStorage = new UserStorage();
         this.userStorage.realm.write(() => {
             this.userStorage.realm.create('User', {
-                id: 'g1625346125341653'
+                id: 'g1625346125341653',
+                updated: 123456789
             }, true);
         });
 
@@ -80,6 +82,7 @@ export default class Main extends Component {
     _renderRow(data) {
         return (
             <PreviewCard
+                rnavigator={this.props.rnavigator}
                 key={data.id} 
                 source={data}
             />
@@ -103,7 +106,7 @@ export default class Main extends Component {
                             <TouchableHighlight underlayColor="transparent" onPress={() => {this._labelListOpen()}}>
                                 <View style={styles.innerNav}>
                                     <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
-                                    <Icon style={styles.exandIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
+                                    <Icon style={styles.expendIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
                                 </View>
                             </TouchableHighlight>
                         </Nav>
@@ -137,15 +140,9 @@ export default class Main extends Component {
     }
 
     _addRecipe() {
-
-        this.props.navigator.push({
-            name: 'detail',
-            index: 2
-          });
-
-        // this.recipeStorage.add({
-        //     owner: this.userStorage.userid
-        // });
+        this.recipeStorage.add({
+            owner: this.userStorage.userid
+        });
     }
 
     _onSelectLabel(source) {
@@ -187,7 +184,7 @@ const styles = StyleSheet.create({
     labelName: {
         fontSize: 18
     },
-    exandIcon: {
+    expendIcon: {
         marginTop: -5
     },
     layer: {

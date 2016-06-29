@@ -29,9 +29,6 @@ export class PopupView extends ViewObject {
             animateBgOpacity: new Animated.Value(0), 
             animateBoxXy: new Animated.ValueXY({x: 0, y: 300})
         });
-
-        // bind this
-        this._onBackAndroid = this._onBackAndroid.bind(this);
     }
     
     // shouldComponentUpdate(nextProps, nextState) {
@@ -65,7 +62,6 @@ export class PopupView extends ViewObject {
                 toValue: boxHeight
             }).start();
         });
-
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', (event) => {
             this.setState({
                 closeButtonMode: 'hide'
@@ -78,18 +74,6 @@ export class PopupView extends ViewObject {
                 toValue: this.props.boxHeight
             }).start();
         });
-
-        // 뒤로가기 시스템 버튼 눌렀을 때 창 닫기
-        BackAndroid.addEventListener('hardwareBackPress', this._onBackAndroid);
-    }
-    
-    _onBackAndroid() {
-        if (this.state.activation && this.state.closeButtonMode == 'hide') {
-            this.close();
-            return true;
-        } else {
-            return false;
-        }
     }
 
     componentWillUnmount () {
@@ -178,7 +162,7 @@ export class PopupView extends ViewObject {
         }
         
         return (
-            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]}>
+            <Overlay isVisible={this.state.activation} style={[styles.overlay, this.props.style]} onBackAndroid={()=>{this.close()}}>
                 <Animated.View style={[styles.bg, {opacity: this.state.animateBgOpacity}]}></Animated.View>
                 <View style={[styles.content]} removeClippedSubviews={true}>
                     <View ref='tooltip' style={styles.tooltip}>

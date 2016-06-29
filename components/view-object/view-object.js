@@ -33,8 +33,6 @@ class ViewObject extends Component {
         this.setViewState({activation: false});
     }
     
-    
-
     toggleActivation() {
         if (this.state.activation) {
             this.inactive();

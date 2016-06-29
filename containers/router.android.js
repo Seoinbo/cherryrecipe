@@ -14,7 +14,7 @@ class Router extends Component {
         this.props = props;
 
         // we fill this up upon on first navigation.
-        this.navigator;
+        this.rnavigator;
 
         // bind this
         this._onBackAndroid = this._onBackAndroid.bind(this);
@@ -29,10 +29,10 @@ class Router extends Component {
     }
 
     _onBackAndroid() {
-         if (this.navigator.getCurrentRoutes().length === 1  ) {
+         if (this.rnavigator.getCurrentRoutes().length === 1) {
             return false;
         } else {
-            this.navigator.pop();
+            this.rnavigator.pop();
             return true;
         }
     }
@@ -44,26 +44,25 @@ class Router extends Component {
                 configureScene={(route, routeStack) => {
                     return this._configureScene(route, routeStack);
                 }}
-                renderScene={(route, navigator) => {
-                    return this._renderScene(route, navigator);
+                renderScene={(route, rnavigator) => {
+                    return this._renderScene(route, rnavigator);
                 }}
             />
         )
     }
 
-    _renderScene(route, navigator) {
-        this.navigator = navigator;
+    _renderScene(route, rnavigator) {
+        this.rnavigator = rnavigator;
 
         if (route.name == 'detail') {
-            return <Detail navigator={navigator} {...this.props} />
+            return <Detail rnavigator={rnavigator} recipeID={route.recipeID} {...this.props} />
         } else { // 'main'
-            return <Main navigator={navigator} {...this.props} />
+            return <Main rnavigator={rnavigator} {...this.props} />
         }
     }
 
     _configureScene(route, routeStack) {
-        console.log(Navigator.SceneConfigs.FloatFromBottom);
-        return Navigator.SceneConfigs.FloatFromBottom;
+        return Navigator.SceneConfigs.FloatFromRight;
     }
 
 
