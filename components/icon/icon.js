@@ -13,12 +13,28 @@ class Icon extends Component {
     render() {
         let path;
         switch (this.props.name) {
+        case 'add':
+            path = require("../../images/icons/ic_add.png");
+            break;
+        case 'ic_alarm':
+            path = require("../../images/icons/ic_alarm.png");
+            break;
+        case 'ic_arrow_back':
+            path = require("../../images/icons/ic_arrow_back.png");
+            break;
         case 'autorenew':
             path = require("../../images/icons/ic_autorenew.png");
+            break;
+        case 'clear':
+            path = require("../../images/icons/ic_clear.png");
             break;
         case 'dehaze':
             path = require("../../images/icons/ic_dehaze.png");
             break;
+        case 'ic_delete':
+            path = require("../../images/icons/ic_delete.png");
+            break;
+
         case 'settings':
             path = require("../../images/icons/ic_settings.png");
             break;
@@ -28,12 +44,8 @@ class Icon extends Component {
         case 'expand_more':
             path = require("../../images/icons/ic_expand_more.png");
             break;
-        case 'clear':
-            path = require("../../images/icons/ic_clear.png");
-            break;
-        case 'add':
-            path = require("../../images/icons/ic_add.png");
-            break;
+
+        
         case 'done':
             path = require("../../images/icons/ic_done.png");
             break;

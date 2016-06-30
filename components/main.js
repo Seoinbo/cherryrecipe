@@ -11,7 +11,11 @@ import {
 import Realm from 'realm';
 
 // Components
-import Nav from './nav/nav';
+import Nav, {
+    NavLeft,
+    NavCenter,
+    NavRight
+} from './nav/nav';
 import Toolbar from './toolbar/toolbar';
 import PreviewCard from './preview-card/preview-card';
 import Button from './button/button';
@@ -102,13 +106,24 @@ export default class Main extends Component {
             <View style={styles.container}>
                 <View style={styles.wrapper}>
                     <View style={styles.content}>
-                        <Nav style={styles.nav} childType="object">
-                            <TouchableHighlight underlayColor="transparent" onPress={() => {this._labelListOpen()}}>
-                                <View style={styles.innerNav}>
-                                    <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
-                                    <Icon style={styles.expendIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
-                                </View>
-                            </TouchableHighlight>
+                        <Nav style={styles.nav}>
+                            <NavLeft>
+                                <Button icon="settings"/>
+                            </NavLeft>
+                            <NavCenter align="center">
+                                <TouchableHighlight underlayColor="transparent" onPress={() => {this._labelListOpen()}}>
+                                    <View style={styles.innerNav}>
+                                        <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
+                                        <Icon style={styles.expendIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
+                                    </View>
+                                </TouchableHighlight>
+                            </NavCenter>
+                            <NavRight>
+                                <Button icon="autorenew"/>
+                                <Button icon="autorenew"/>
+                                <Button icon="autorenew"/>
+
+                            </NavRight>
                         </Nav>
                         <ListView 
                             style={styles.list}
@@ -179,6 +194,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1
     },
     innerNav: {
+        fexl: 1,
         alignItems: 'center'
     },
     labelName: {
