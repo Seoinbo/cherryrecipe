@@ -16,10 +16,10 @@ class Icon extends Component {
         case 'add':
             path = require("../../images/icons/ic_add.png");
             break;
-        case 'ic_alarm':
+        case 'alarm':
             path = require("../../images/icons/ic_alarm.png");
             break;
-        case 'ic_arrow_back':
+        case 'arrow_back':
             path = require("../../images/icons/ic_arrow_back.png");
             break;
         case 'autorenew':
@@ -31,12 +31,11 @@ class Icon extends Component {
         case 'dehaze':
             path = require("../../images/icons/ic_dehaze.png");
             break;
-        case 'ic_delete':
+        case 'delete':
             path = require("../../images/icons/ic_delete.png");
             break;
-
-        case 'settings':
-            path = require("../../images/icons/ic_settings.png");
+        case 'done':
+            path = require("../../images/icons/ic_done.png");
             break;
         case 'expand_less':
             path = require("../../images/icons/ic_expand_less.png");
@@ -44,22 +43,44 @@ class Icon extends Component {
         case 'expand_more':
             path = require("../../images/icons/ic_expand_more.png");
             break;
-
-        
-        case 'done':
-            path = require("../../images/icons/ic_done.png");
+       case 'file_download':
+            path = require("../../images/icons/ic_file_download.png");
+            break;
+        case 'label':
+            path = require("../../images/icons/ic_label.png");
             break;
         case 'mode_edit':
             path = require("../../images/icons/ic_mode_edit.png");
             break;
+        case 'more_horiz':
+            path = require("../../images/icons/ic_more_horiz.png");
+            break;
+        case 'more_vert':
+            path = require("../../images/icons/ic_more_vert.png");
+            break;
         case 'public':
             path = require("../../images/icons/ic_public.png");
+            break;
+        case 'publish':
+            path = require("../../images/icons/ic_publish.png");
             break;
         case 'search':
             path = require("../../images/icons/ic_search.png");
             break;
+        case 'settings':
+            path = require("../../images/icons/ic_settings.png");
+            break;
+        case 'share':
+            path = require("../../images/icons/ic_share.png");
+            break;
 	    case 'shopping_cart':
             path = require("../../images/icons/ic_shopping_cart.png");
+            break;
+        case 'visibility':
+            path = require("../../images/icons/ic_visibility.png");
+            break;
+        case 'visibility_off':
+            path = require("../../images/icons/ic_visibility_off.png");
             break;
         }
         

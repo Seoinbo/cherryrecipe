@@ -24,13 +24,18 @@ class Button extends ViewObject {
             touchableProps.onPressOut = this.props.onPressOut;
             touchableProps.onLongPress = this.props.onLongPress;
         }
-    
+
+        let textLabel;
+        if (typeof this.props.children == 'string') {
+            textLabel = <Text style={styles.text}>{this.props.children}</Text>;
+        }
+
         return (
             <ToggleView style={[styles.button, this.props.style]} rendering={this.props.rendering} visible={this.props.visible}>
                 <TouchableHighlight {...touchableProps} underlayColor="transparent">
                     <View style={styles.box}>
                         <Icon name={this.props.icon}/>
-                        <Text style={styles.text}>{this.props.children}</Text>
+                        {textLabel}
                     </View>
                 </TouchableHighlight>
             </ToggleView>

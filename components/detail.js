@@ -9,11 +9,16 @@ import {
 import Realm from 'realm';
 
 // Components
-import Nav from './nav/nav';
+import Nav, {
+    NavLeft,
+    NavCenter,
+    NavRight
+} from './nav/nav';
 import Toolbar from './toolbar/toolbar';
 import Button from './button/button';
 import Icon from './icon/icon';
 import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
+import ModalLayer from './modal-layer/modal-layer';
 
 // Storages
 import UserStorage from '../storages/user-storage';
@@ -28,31 +33,48 @@ class Detail extends Component {
 
         // LocalStorage via recipes.
         this.recipeStorage = new RecipeStorage();
+
+        // bind this.
+        this._openMoreList = this._openMoreList.bind(this);
     }
 
     componentDidMount() {
     }
 
     render() {
-        let {
-            recipeID
-        } = this.props;
+        let {rnavigator, recipeID} = this.props;
 
         return (
             <View style={styles.container}>
                 <View style={styles.wrapper}>
                     <View style={styles.content}>
-                        <Nav style={styles.nav} childType="object">
-                            <TouchableHighlight underlayColor="transparent">
-                                <View style={styles.innerNav}>
-                                    <Text style={styles.recipeName}>{recipeID}</Text>
-                                </View>
-                            </TouchableHighlight>
+                        <Nav style={styles.nav}>
+                            <NavLeft rnavigator={rnavigator}/>
+                            <NavCenter align="left">
+                                {recipeID}
+                            </NavCenter>
+                            <NavRight>
+                                <Button icon="visibility_off"/>
+                                <Button icon="more_vert" onPress={this._openMoreList}/>
+                            </NavRight>
                         </Nav>
-                    </View>             
+                    </View>
+                    <ModalLayer
+                        ref="modalLayer"
+                        renderComponent={(route, ref) => {
+                            return this._renderComponent(route, ref);
+                        }}
+                    />
                 </View>
             </View>
         );
+    }
+    
+    _renderComponent(route, ref) {
+    }
+
+    _openMoreList() {
+        this.refs.modalLayer.open();
     }
 }
 

@@ -107,7 +107,7 @@ export default class Main extends Component {
                 <View style={styles.wrapper}>
                     <View style={styles.content}>
                         <Nav style={styles.nav}>
-                            <NavLeft>
+                            <NavLeft displayBackButton={false}>
                                 <Button icon="settings"/>
                             </NavLeft>
                             <NavCenter align="center">
@@ -120,9 +120,6 @@ export default class Main extends Component {
                             </NavCenter>
                             <NavRight>
                                 <Button icon="autorenew"/>
-                                <Button icon="autorenew"/>
-                                <Button icon="autorenew"/>
-
                             </NavRight>
                         </Nav>
                         <ListView 
@@ -194,7 +191,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1
     },
     innerNav: {
-        fexl: 1,
         alignItems: 'center'
     },
     labelName: {

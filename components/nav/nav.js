@@ -28,12 +28,17 @@ class NavLeft extends ViewObject {
     
     constructor(props, context) {
         super(props, context);
+        this.props = props;
+
+        // bind this.
+        this._backScene = this._backScene.bind(this);
     }
 
     render() {
-        let backButton = <View/>;
-        if (this.props.displayBackButton) {
-            backButton = <Button icon="add"/>;
+        // back-button, default value is true.
+        let backButton = <Button icon="arrow_back" onPress={this._backScene}/>;
+        if (this.props.displayBackButton === false) {
+            backButton = <View/>;
         }
 
         return (
@@ -42,6 +47,13 @@ class NavLeft extends ViewObject {
                 {this.props.children}
             </View>
         )
+    }
+
+    _backScene() {
+        if (!this.props.rnavigator) {
+            return;
+        }
+        this.props.rnavigator.pop();
     }
 }
 
@@ -52,16 +64,26 @@ class NavCenter extends ViewObject {
     }
 
     render() {
+        let {children} = this.props;
+
         let optionalStyles = {
-            alignItems: 'center'
+            justifyContent: 'center'
         };
         if (this.props.align == 'left') {
-            optionalStyles.alignItems = 'flex-start';
+            optionalStyles.justifyContent = 'flex-start';
+        }
+
+        // subject
+        let innerContent;
+        if (typeof children == 'string') {
+            innerContent = <Text numberOfLines={1} style={styles.subject}>{children}</Text>
+        } else {
+            innerContent = children;
         }
 
         return (
             <View style={[styles.navCenter, this.props.style, optionalStyles]}>
-                {this.props.children}
+                {innerContent}
             </View>
         )
     }
@@ -89,24 +111,20 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     subject: {
-        fontSize: 18
-    },
-    subjectbox: {
-
+        flex: 1,
+        fontSize: 18,
+        color: '#000000'
     },
     navLeft: {
-        flexDirection: 'row',
-        backgroundColor: '#334455'
+        flexDirection: 'row'
     },
     navCenter: {
         flex: 1,
-        alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#112233'
+        justifyContent: 'center'
     },
     navRight: {
-        flexDirection: 'row',
-        backgroundColor: '#556677'
+        flexDirection: 'row'
     }
 });
 
