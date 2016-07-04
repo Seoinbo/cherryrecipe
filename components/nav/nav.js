@@ -71,6 +71,8 @@ class NavCenter extends ViewObject {
         };
         if (this.props.align == 'left') {
             optionalStyles.justifyContent = 'flex-start';
+        } else if (this.props.align == 'right') {
+            optionalStyles.justifyContent = 'flex-end';
         }
 
         // subject
@@ -111,7 +113,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     subject: {
-        flex: 1,
         fontSize: 18,
         color: '#000000'
     },
@@ -121,7 +122,8 @@ const styles = StyleSheet.create({
     navCenter: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     navRight: {
         flexDirection: 'row'

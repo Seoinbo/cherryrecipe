@@ -59,12 +59,14 @@ class Detail extends Component {
                             </NavRight>
                         </Nav>
                     </View>
-                    <ModalLayer
-                        ref="modalLayer"
-                        renderComponent={(route, ref) => {
-                            return this._renderComponent(route, ref);
-                        }}
-                    />
+                    <Toolbar style={styles.toolbar}>
+                        <Button style={styles.addRecipeButton} icon="add" onPress={()=>this._addRecipe()}>새 레시피</Button>
+                        <View style={styles.toolbarButtonGroup}>
+                            <Button icon="public"/>
+                            <Button icon="shopping_cart"/>
+                            <Button icon="search"/>
+                        </View>
+                    </Toolbar>
                 </View>
             </View>
         );
@@ -108,6 +110,13 @@ const styles = StyleSheet.create({
     recipeName: {
         fontSize: 18
     },
+    addRecipeButton: {
+        width: 130
+    },
+    toolbarButtonGroup: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    }
 });
 
 export default Detail;

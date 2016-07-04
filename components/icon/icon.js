@@ -49,6 +49,9 @@ class Icon extends Component {
         case 'label':
             path = require("../../images/icons/ic_label.png");
             break;
+        case 'menu':
+            path = require("../../images/icons/ic_menu.png");
+            break;
         case 'mode_edit':
             path = require("../../images/icons/ic_mode_edit.png");
             break;

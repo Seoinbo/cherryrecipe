@@ -8,6 +8,7 @@ import {
 import {Overlay} from '../overlay/overlay';
 import ViewObject from '../view-object/view-object';
 import Button from '../button/button';
+import Menu from './menu/menu';
 
 class ModalLayer extends ViewObject {
     constructor(props, context) {
@@ -62,6 +63,12 @@ class ModalLayer extends ViewObject {
         }
     }
 
+    _renderMenu() {
+        return (
+            <Menu />
+        )
+    }
+
     render() {
         return (
             <Overlay isVisible={this.state.activation} onBackAndroid={this.close}>
@@ -70,6 +77,7 @@ class ModalLayer extends ViewObject {
                     <Animated.View style={[styles.header, {opacity: this.state.animateHeaderOpacity}]}>
                         <Button icon="clear" onPress={this.close}/>
                     </Animated.View>
+                    {this._renderMenu()}
                 </View>
             </Overlay>
         );

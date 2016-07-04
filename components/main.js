@@ -22,6 +22,7 @@ import Button from './button/button';
 import Icon from './icon/icon';
 import PopupViewLabel from './popup-view-label/popup-view-label';
 import KeyboardSpacer from './keyboard-spacer/keyboard-spacer';
+import ModalLayer from './modal-layer/modal-layer';
 
 // Storages
 import UserStorage from '../storages/user-storage';
@@ -56,6 +57,9 @@ export default class Main extends Component {
             currentLabelName: "All labels",
             arrRecipeData: recipeSource.cloneWithRows(this._getRecipeData())
         });
+
+        // bind this.
+        this._openMenu = this._openMenu.bind(this);
     }
 
     componentDidMount() {
@@ -108,18 +112,13 @@ export default class Main extends Component {
                     <View style={styles.content}>
                         <Nav style={styles.nav}>
                             <NavLeft displayBackButton={false}>
-                                <Button icon="settings"/>
+                                <Button icon="menu" onPress={this._openMenu}/>
                             </NavLeft>
                             <NavCenter align="center">
-                                <TouchableHighlight underlayColor="transparent" onPress={() => {this._labelListOpen()}}>
-                                    <View style={styles.innerNav}>
-                                        <Text ref="labelName" style={styles.labelName}>{this.state.currentLabelName}</Text>
-                                        <Icon style={styles.expendIcon} name={expendIconName} iconWidth="20" iconHeight="20"/>
-                                    </View>
-                                </TouchableHighlight>
+                                {this.state.currentLabelName}
                             </NavCenter>
                             <NavRight>
-                                <Button icon="autorenew"/>
+                                <Button icon="search"/>
                             </NavRight>
                         </Nav>
                         <ListView 
@@ -139,6 +138,12 @@ export default class Main extends Component {
                             </View>
                         </Toolbar>
                     </View>
+                    <ModalLayer
+                        ref="modalLayer"
+                        renderComponent={(route, ref) => {
+                            return this._renderComponent(route, ref);
+                        }}
+                    />
                     <PopupViewLabel
                         ref="popupViewLabel"
                         isVisible={false}
@@ -155,6 +160,10 @@ export default class Main extends Component {
         this.recipeStorage.add({
             owner: this.userStorage.userid
         });
+    }
+
+    _openMenu() {
+        this.refs.modalLayer.open();
     }
 
     _onSelectLabel(source) {
@@ -189,12 +198,6 @@ const styles = StyleSheet.create({
         height: 50,
         borderColor: '#e1e1e1',
         borderBottomWidth: 1
-    },
-    innerNav: {
-        alignItems: 'center'
-    },
-    labelName: {
-        fontSize: 18
     },
     expendIcon: {
         marginTop: -5
